@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { User } from 'src/models/user.model';
 import { AuthService } from './auth.service';
 
@@ -13,8 +13,13 @@ export class AuthController {
   }
 
   @Post('register')
-  public register(@Body() body: Omit<User, 'id'>) {
-    return this.authService.register(body);
+  public register(
+    @Body() body: Omit<User, 'id'>,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    const idToken = authHeader.split('Bearer ')[1];
+    console.log(idToken);
+    return this.authService.register(body, idToken);
     // return 'Hola desde register';
   }
 }
