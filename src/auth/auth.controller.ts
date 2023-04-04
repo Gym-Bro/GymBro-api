@@ -1,5 +1,6 @@
 import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { User } from 'src/models/user.model';
+import { RegisterUserRequestDto } from './../modules/user/dto/register-user.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -14,12 +15,10 @@ export class AuthController {
 
   @Post('register')
   public register(
-    @Body() body: Omit<User, 'id'>,
+    @Body() registerUser: RegisterUserRequestDto,
     @Headers('Authorization') authHeader: string,
   ) {
     const idToken = authHeader.split('Bearer ')[1];
-    console.log(idToken);
-    return this.authService.register(body, idToken);
-    // return 'Hola desde register';
+    return this.authService.register(registerUser, idToken);
   }
 }
