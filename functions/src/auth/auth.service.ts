@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../modules/user/entities/user.entity';
 import { UserService } from '../modules/user/user.service';
 import { FirebaseService } from './../firebase/firebase.service';
@@ -14,16 +14,22 @@ export class AuthService {
   public async register(
     registerUser: RegisterUserRequestDto,
     idToken,
-  ): Promise<Pick<
-    User,
-    'first_name' | 'last_name' | 'email' | 'photo_url'
-  > | null> {
+  ): Promise<
+    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  > {
     try {
       const result = await this.firebaseService.auth.verifyIdToken(idToken);
       if (result.email === registerUser.email) {
-        return await this.userService.create(registerUser);
-      }
-      return null;
+        if (result.email_verified)
+          return await this.userService.create(registerUser);
+        else
+          throw new HttpException(
+            'You must verify your email',
+            HttpStatus.UNAUTHORIZED,
+          );
+      } else
+        throw new HttpException('User email not match', HttpStatus.CONFLICT);
     } catch (error) {
       return error;
     }

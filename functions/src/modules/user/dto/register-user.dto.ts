@@ -17,7 +17,12 @@ export class RegisterUserRequestDto {
   @IsString()
   @MinLength(3)
   @IsNotEmpty()
-  display_name: string;
+  first_name: string;
+
+  @IsString()
+  @MinLength(3)
+  @IsNotEmpty()
+  last_name: string;
 
   @IsEmail()
   @IsNotEmpty()
@@ -37,4 +42,8 @@ export class RegisterUserRequestDto {
   @IsUrl()
   @IsOptional()
   photoURL: string;
+
+  @IsString()
+  @IsNotEmpty()
+  providerId: string;
 }

@@ -4,5 +4,5 @@ export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
     login(body: Pick<RegisterUserRequestDto, 'email' | 'password'>): Promise<any>;
-    register(registerUser: RegisterUserRequestDto, authHeader: string): Promise<Pick<import("../modules/user/entities/user.entity").User, "email" | "first_name" | "last_name" | "photo_url">>;
+    register(registerUser: RegisterUserRequestDto, authHeader: string): Promise<Pick<import("../modules/user/entities/user.entity").User, "first_name" | "last_name" | "email" | "photo_url"> | import("@nestjs/common").HttpException>;
 }

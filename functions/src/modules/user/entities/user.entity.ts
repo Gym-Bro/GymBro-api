@@ -8,17 +8,20 @@ export class User extends IEntity {
   email: string = null;
   password: string = null;
   photo_url: string = null;
+  providerId: string = null;
 
   constructor(registerUser: RegisterUserRequestDto) {
     super();
     this.email = registerUser.email;
-    this.first_name = registerUser.display_name;
+    this.first_name = registerUser.first_name;
+    this.last_name = registerUser.last_name;
     this.password = this.encryptPassword(
       registerUser.password,
       'sha256',
       'hex',
     );
     this.photo_url = registerUser.photoURL || null;
+    this.providerId = registerUser.providerId;
   }
 
   private encryptPassword(password, algoritm, digest) {

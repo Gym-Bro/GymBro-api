@@ -22,9 +22,13 @@ let AuthService = class AuthService {
         try {
             const result = await this.firebaseService.auth.verifyIdToken(idToken);
             if (result.email === registerUser.email) {
-                return await this.userService.create(registerUser);
+                if (result.email_verified)
+                    return await this.userService.create(registerUser);
+                else
+                    throw new common_1.HttpException('You must verify your email', common_1.HttpStatus.UNAUTHORIZED);
             }
-            return null;
+            else
+                throw new common_1.HttpException('User email not match', common_1.HttpStatus.CONFLICT);
         }
         catch (error) {
             return error;

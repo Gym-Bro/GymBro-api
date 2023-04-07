@@ -21,7 +21,13 @@ __decorate([
     (0, class_validator_1.MinLength)(3),
     (0, class_validator_1.IsNotEmpty)(),
     __metadata("design:type", String)
-], RegisterUserRequestDto.prototype, "display_name", void 0);
+], RegisterUserRequestDto.prototype, "first_name", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(3),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], RegisterUserRequestDto.prototype, "last_name", void 0);
 __decorate([
     (0, class_validator_1.IsEmail)(),
     (0, class_validator_1.IsNotEmpty)(),
@@ -45,5 +51,10 @@ __decorate([
     (0, class_validator_1.IsOptional)(),
     __metadata("design:type", String)
 ], RegisterUserRequestDto.prototype, "photoURL", void 0);
+__decorate([
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsNotEmpty)(),
+    __metadata("design:type", String)
+], RegisterUserRequestDto.prototype, "providerId", void 0);
 exports.RegisterUserRequestDto = RegisterUserRequestDto;
 //# sourceMappingURL=register-user.dto.js.map

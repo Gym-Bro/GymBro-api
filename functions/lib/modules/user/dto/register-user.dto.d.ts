@@ -1,7 +1,9 @@
 export declare class RegisterUserRequestDto {
-    display_name: string;
+    first_name: string;
+    last_name: string;
     email: string;
     password: string;
     confirm: string;
     photoURL: string;
+    providerId: string;
 }

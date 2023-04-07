@@ -7,6 +7,7 @@ export declare class User extends IEntity {
     email: string;
     password: string;
     photo_url: string;
+    providerId: string;
     constructor(registerUser: RegisterUserRequestDto);
     private encryptPassword;
 }
