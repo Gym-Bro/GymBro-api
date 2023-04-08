@@ -6,21 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthModule = void 0;
+exports.MailingModule = void 0;
 const common_1 = require("@nestjs/common");
-const auth_service_1 = require("./auth.service");
-const auth_controller_1 = require("./auth.controller");
-const firebase_module_1 = require("./../firebase/firebase.module");
-const user_module_1 = require("../modules/user/user.module");
-const mailing_module_1 = require("./../mailing/mailing.module");
-let AuthModule = class AuthModule {
+const mailer_1 = require("@nestjs-modules/mailer");
+const mailing_config_1 = require("./../utils/config/mailing.config");
+const mailing_service_1 = require("./mailing.service");
+let MailingModule = class MailingModule {
 };
-AuthModule = __decorate([
+MailingModule = __decorate([
     (0, common_1.Module)({
-        controllers: [auth_controller_1.AuthController],
-        providers: [auth_service_1.AuthService],
-        imports: [firebase_module_1.FirebaseModule, user_module_1.UserModule, mailing_module_1.MailingModule],
+        imports: [
+            mailer_1.MailerModule.forRootAsync({
+                useClass: mailing_config_1.MailerConfigService,
+            }),
+        ],
+        providers: [mailing_service_1.MailingService],
+        exports: [mailing_service_1.MailingService],
     })
-], AuthModule);
-exports.AuthModule = AuthModule;
-//# sourceMappingURL=auth.module.js.map
+], MailingModule);
+exports.MailingModule = MailingModule;
+//# sourceMappingURL=mailing.module.js.map

@@ -1,4 +1,4 @@
-import { IEntity } from './../../../utils/IEntity';
+import { IEntity } from '../../../utils/interfaces/IEntity';
 import { RegisterUserRequestDto } from '../dto/register-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 export declare class User extends IEntity {

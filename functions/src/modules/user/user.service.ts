@@ -15,7 +15,6 @@ export class UserService {
   > | null> {
     const user = new User(registerUser);
     return await this.userRepository.create(user);
-    // return 'This action adds a new user';
   }
 
   findAll() {

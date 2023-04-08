@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.User = void 0;
-const IEntity_1 = require("./../../../utils/IEntity");
+const IEntity_1 = require("../../../utils/interfaces/IEntity");
 const crypto_1 = require("crypto");
 class User extends IEntity_1.IEntity {
     constructor(registerUser) {
