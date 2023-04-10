@@ -13,12 +13,15 @@ This is a Nest.js app embedded in a Firebase Function that utilizes Firebase Adm
 $ npm install -g firebase-tools
 $ npm install -g firebase-functions@latest firebase-admin@latest firebase@latest
 ```
+** With linux you must do it with sudo prefix.
 
-5. Log in into to your firebase account (using google) with this command:
+5. Log in into your firebase account (using google) with this command:
 
 ```bash
 $ firebase login
 ```
+
+Press yes to allow permissions.
 
 6. Install all the dependencies using npm, make sure you are standing in functions folder (Gym-Bro-Api/functions/):
 
@@ -34,6 +37,16 @@ $ firebase use --add
 
 and select the gym-bro project (you must requiere access to the project, see contact info)
 
+8. In the functions/package.json file, make sure that the script "serve" is like follow in the next operative systems:
+
+Windows:
+"serve": "nodemon --watch src --exec \"npm run build && firebase emulators:start\" --signal SIGTERM"
+
+Linux:
+"serve": "nodemon --watch src --exec 'npm run build && firebase emulators:start' --signal SIGTERM",
+
+9. If you have windows OS, install Java and make sure that the Path configuration has it's bin files.
+
 ## Running firebase locally:
 
 Running firebase emulators will allow you to run all the nest js app into the firebase functions, so you can use all the firebase services as the main infrastructure for this project.
@@ -45,6 +58,8 @@ $ npm start
 ```
 
 This will start the firebase:emulators with all the services included in the firebase project like firestore, authentication, storage, and so...
+
+** In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
 
 You should see this kind of message on terminal if everything go rigth:
 
