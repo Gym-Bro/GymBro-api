@@ -43,3 +43,12 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# Lib folder
+**/lib/
+
+#package-lock.json
+**/package-lock.json
+
+#firebase src
+.firebaserc
