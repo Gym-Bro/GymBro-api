@@ -5,13 +5,10 @@ import { AppService } from './app.service';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return 'Hola desde nest en firebase!!';
-  }
-
   @Get('firestore')
   public async firestore() {
-    return await this.appService.getUsers();
+
+    return this.appService.getHello();
+
   }
 }
