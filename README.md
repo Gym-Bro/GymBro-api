@@ -13,7 +13,8 @@ This is a Nest.js app embedded in a Firebase Function that utilizes Firebase Adm
 $ npm install -g firebase-tools
 $ npm install -g firebase-functions@latest firebase-admin@latest firebase@latest
 ```
-** With linux you must do it with sudo prefix.
+
+\*\* With linux you must do it with sudo prefix.
 
 5. Log in into your firebase account (using google) with this command:
 
@@ -35,9 +36,7 @@ $ npm install
 $ firebase use --add
 ```
 
-and select the gym-bro project (you must requiere access to the project, see contact info)
-
-8. In the functions/package.json file, make sure that the script "serve" is like follow in the next operative systems:
+and select the gym-bro project (you must requiere access to the project, see contact info) \**IMPORTANT: give a unique alias to the project. Use *gymbro\* 8. In the functions/package.json file, make sure that the script "serve" is like follow in the next operative systems:
 
 Windows:
 "serve": "nodemon --watch src --exec \"npm run build && firebase emulators:start\" --signal SIGTERM"
@@ -59,7 +58,7 @@ $ npm start
 
 This will start the firebase:emulators with all the services included in the firebase project like firestore, authentication, storage, and so...
 
-** In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
+\*\* In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
 
 You should see this kind of message on terminal if everything go rigth:
 
