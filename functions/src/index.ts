@@ -14,8 +14,10 @@ import { ExpressAdapter } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import express from 'express';
 import { ValidationPipe } from '@nestjs/common';
-const server = express();
+import cors from 'cors';
 
+const server = express();
+server.use(cors());
 const createNestServer = async (expressInstance) => {
   const app = await NestFactory.create(
     AppModule,
