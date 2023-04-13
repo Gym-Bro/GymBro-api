@@ -22,6 +22,7 @@ export class AuthService {
     | HttpException
   > {
     try {
+      console.log(registerUser);
       const result = await this.firebaseService.auth.verifyIdToken(idToken);
       if (result.email === registerUser.email) {
         if (result.email_verified || true) {

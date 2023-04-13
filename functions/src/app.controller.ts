@@ -6,12 +6,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Get()
-  getHello(): string {
-    return 'Hola desde nest en firebase!!';
-  }
-
-  @Get('firestore')
-  public async firestore() {
-    return await this.appService.getUsers();
+  public getHello(): string {
+    return this.appService.getHello();
   }
 }
