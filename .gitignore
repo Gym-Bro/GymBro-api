@@ -1,8 +1,3 @@
-# Compiled JavaScript files
-lib/**/*.js
-lib/**/*.js.map
-
-
 # TypeScript v1 declaration files
 typings/
 
@@ -47,7 +42,10 @@ lerna-debug.log*
 
 # Lib folder
 **/lib
-**/lib/**
+**/lib/**/*.js
+**/lib/**/*.js.map
+**/lib/**/*.d.ts
+
 
 #package-lock.json
 **/package-lock.json
