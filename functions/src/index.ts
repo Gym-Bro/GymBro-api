@@ -37,4 +37,7 @@ createNestServer(server)
   .then((v) => console.log('Nest Ready'))
   .catch((err) => console.error('Nest broken', err));
 
+// Handle OPTIONS requests
+server.options('*', cors());
+
 export const api = functions.https.onRequest(server);
