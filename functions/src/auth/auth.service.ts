@@ -22,26 +22,25 @@ export class AuthService {
     | HttpException
   > {
     try {
-      console.log(registerUser);
-      const result = await this.firebaseService.auth.verifyIdToken(idToken);
-      if (result.email === registerUser.email) {
-        if (result.email_verified || true) {
-          const user = await this.userService.create(registerUser);
-          await this.mailingService.sendEmail({
-            from: 'admin@gymbro.com', // Update with valid sender email address
-            to: user.email, // Update with valid recipient email address
-            subject: 'Registration Mail', // Update with meaningful subject for the email
-            text: `Welcome ${user.first_name} ${user.last_name}!!`, // Update with meaningful text body for the email
-            html: template, // Update with meaningful HTML body for the email
-          });
-          return user;
-        } else
-          throw new HttpException(
-            'You must verify your email',
-            HttpStatus.UNAUTHORIZED,
-          );
+      const result = await this.firebaseService.auth.getUserByEmail(
+        registerUser.email,
+      );
+      if (true || result.emailVerified) {
+        const user = await this.userService.create(registerUser);
+        await this.mailingService.sendEmail({
+          from: 'admin@gymbro.com', // Update with valid sender email address
+          to: user.email, // Update with valid recipient email address
+          subject: 'Registration Mail', // Update with meaningful subject for the email
+          text: `Welcome ${user.first_name} ${user.last_name}!!`, // Update with meaningful text body for the email
+          html: template, // Update with meaningful HTML body for the email
+        });
+        return user;
       } else
-        throw new HttpException('User email not match', HttpStatus.CONFLICT);
+        throw new HttpException(
+          'You must verify your email',
+          HttpStatus.UNAUTHORIZED,
+        );
+      throw new HttpException('User email not match', HttpStatus.CONFLICT);
     } catch (error) {
       return error;
     }

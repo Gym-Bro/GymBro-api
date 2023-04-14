@@ -19,7 +19,6 @@ export class AuthController {
     @Body() registerUser: RegisterUserRequestDto,
     @Headers('Authorization') authHeader: string,
   ) {
-    console.log(registerUser);
     const idToken = authHeader.split('Bearer ')[1];
     return this.authService.register(registerUser, idToken);
   }
