@@ -22,10 +22,8 @@ export class AuthService {
     | HttpException
   > {
     try {
-      const result = await this.firebaseService.auth.getUserByEmail(
-        registerUser.email,
-      );
-      if (true || result.emailVerified) {
+      const result = await this.firebaseService.auth.verifyIdToken(idToken);
+      if (result.uid) {
         const user = await this.userService.create(registerUser);
         await this.mailingService.sendEmail({
           from: 'admin@gymbro.com', // Update with valid sender email address
@@ -35,22 +33,44 @@ export class AuthService {
           html: template, // Update with meaningful HTML body for the email
         });
         return user;
-      } else
-        throw new HttpException(
-          'You must verify your email',
-          HttpStatus.UNAUTHORIZED,
-        );
-      throw new HttpException('User email not match', HttpStatus.CONFLICT);
+      } else {
+        throw new HttpException('User email not match', HttpStatus.CONFLICT);
+      }
     } catch (error) {
       return error;
     }
   }
 
-  public async login(email: string, password: string) {
+  public async login(
+    email: string,
+    idToken: string,
+  ): Promise<
+    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  > {
     try {
-      // Here we must verify the auth token provided from the client...
+      // Here we must verify the auth token provided from the client and that the user exist in the db firestore
+      await this.firebaseService.auth.verifyIdToken(idToken);
+      const userQuery = await this.firebaseService.firestore
+        .collection('users')
+        .where('email', '==', email)
+        .get();
+      if (userQuery.empty) {
+        throw new HttpException('email user not found', HttpStatus.NOT_FOUND);
+      }
+      const { first_name, last_name, photo_url } = userQuery.docs[0].data();
+      return { email, first_name, last_name, photo_url };
     } catch (error) {
-      return error;
+      if (error instanceof HttpException) {
+        return error;
+      } else if (error.code === 'auth/argument-error') {
+        return new HttpException('Invalid ID token', HttpStatus.BAD_REQUEST);
+      } else {
+        return new HttpException(
+          'Internal Server Error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      }
     }
   }
 }

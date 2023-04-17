@@ -8,9 +8,11 @@ export class AuthController {
 
   @Post('login')
   public login(
-    @Body() body: Pick<RegisterUserRequestDto, 'email' | 'password'>,
+    @Body() body: Pick<RegisterUserRequestDto, 'email'>,
+    @Headers('Authorization') authHeader: string,
   ) {
-    return this.authService.login(body.email, body.password);
+    const idToken = authHeader.split('Bearer ')[1];
+    return this.authService.login(body.email, idToken);
     // return 'Hola desde login';
   }
 
