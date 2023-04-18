@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "gymbro-27bb2"
-  }
+    "default": "gymbro-27bb2",
+    "gymbro-27bb2": "gymbro-27bb2"
+  },
+  "targets": {},
+  "etags": {}
 }

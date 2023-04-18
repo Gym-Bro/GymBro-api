@@ -38,8 +38,8 @@ lerna-debug.log*
 !firebase/firebase.json
 !firebase/firebase-config.json
 firebase/functions/node_modules/
-firebase/firestore.rules
-firebase/storage.rules
+!firebase/firestore.rules
+!firebase/storage.rules
 firebase/auth.rules
 firebase/hosting/functions
 firebase/hosting/firestore.indexes.json
