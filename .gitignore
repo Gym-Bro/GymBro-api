@@ -34,6 +34,15 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# firebase files
-/firebase
-/.github
+# Firebase
+!firebase/firebase.json
+!firebase/firebase-config.json
+firebase/functions/node_modules/
+firebase/firestore.rules
+firebase/storage.rules
+firebase/auth.rules
+firebase/hosting/functions
+firebase/hosting/firestore.indexes.json
+firebase/hosting/firestore.rules
+firebase/hosting/storage.rules
+
