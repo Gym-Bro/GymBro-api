@@ -1,10 +1,7 @@
-# TypeScript v1 declaration files
-typings/
-
-# Node.js dependency directory
-node_modules/
-
 # compiled output
+**/dist
+**/node_modules
+
 /dist
 /node_modules
 
@@ -40,15 +37,3 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# Lib folder
-**/lib
-**/lib/**/*.js
-**/lib/**/*.js.map
-**/lib/**/*.d.ts
-
-
-#package-lock.json
-**/package-lock.json
-
-#firebase src
-.firebaserc
