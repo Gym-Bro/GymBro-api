@@ -1,73 +1,76 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# My Nest.js App with Firebase Function as infrastructure
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a Nest.js app that uses a Firebase Function as server infrastructure. Locally the tests are running with Emulators Suits (a local runtime environment that emulate the firebase cloud services).
 
 ## Installation
+
+1. Clone the repository and navigate to the project directory.
+2. Install Node 18 (make sure is that version and not another!)
+3. Install firebase tools with this command on terminal:
+
+```bash
+$ npm install -g firebase-tools
+$ npm install -g firebase-functions@latest firebase-admin@latest firebase@latest
+```
+
+\*\* With linux you must do it with sudo prefix.
+
+5. Log in into your firebase account (using google) with this command:
+
+```bash
+$ firebase login
+```
+
+Press yes to allow permissions.
+
+\*\* If you want to connect a new firebase app to this nest js app, make sure you've been created it in firebase console (as a new firebase project).
+
+6. Firebase init guide:
+
+7. Install all the dependencies with 'npm i'. Make sure you are in the root project directory!
 
 ```bash
 $ npm install
 ```
 
-## Running the app
+10. Adding Firebase project to the firebase CLI:
+
+Add firebase project to the firebase CLI. You must being logged in so firebase can locate the projects you have access for. Use this command standing on the root project:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+$ firebase use --add
 ```
 
-## Test
+and select the gym-bro project (you must requiere access to the project, see contact info)
+
+\**IMPORTANT: give a unique alias to the project. Use *gymbro\*
+
+11. If you have windows OS, install Java and make sure that the Path configuration has the bin files.
+
+## Running firebase locally:
+
+Running firebase emulators will allow you to run all the nest js app into the firebase functions, so you can use all the firebase services as the main infrastructure for this project.
+
+Go to ../functions on terminal, and type:
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ npm run dev:firebase
 ```
 
-## Support
+This will start the firebase:emulators with all the services included in the firebase project like firestore, authentication, storage, and so...
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+\*\* In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
 
-## Stay in touch
+You should see this kind of message on terminal if everything go rigth:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+![1](readme_images/1.png)
 
-## License
+![2](readme_images/2.png)
 
-Nest is [MIT licensed](LICENSE).
+\*Note: The ports numbers may be differents if you configure them differently in your firebase.json file.
+
+## Testing nest locally:
+
+With postman or any other software like that, you can test the "Hello World from Nest Js" so you can see if the Nest js app was successfully embebbed into the firebase project"
+
+Request a GET to the url showed in functions green checklist line. It will be unique deppending on your project name and settings.

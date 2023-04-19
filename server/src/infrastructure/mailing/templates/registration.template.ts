@@ -3,7 +3,7 @@ import * as path from 'path';
 
 const pathTemplate = path.join(
   process.cwd(),
-  '../../src/infrastructure/mailing/templates',
+  'src/infrastructure/mailing/templates',
   'registration.template.html',
 );
 

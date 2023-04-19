@@ -1,4 +1,7 @@
 # compiled output
+**/dist
+**/node_modules
+
 /dist
 /node_modules
 
@@ -33,16 +36,4 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
-
-# Firebase
-!firebase/firebase.json
-!firebase/firebase-config.json
-firebase/functions/node_modules/
-firebase/firestore.rules
-firebase/storage.rules
-firebase/auth.rules
-firebase/hosting/functions
-firebase/hosting/firestore.indexes.json
-firebase/hosting/firestore.rules
-firebase/hosting/storage.rules
 
