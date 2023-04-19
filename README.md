@@ -27,9 +27,10 @@ Press yes to allow permissions.
 
 6. Firebase init guide:
 
-7. Install all the dependencies with 'npm i'. Make sure you are in the root project directory!
+7. Install all the dependencies with 'npm i'. Make sure you are in the root nest js directory called server.
 
 ```bash
+$ cd server
 $ npm install
 ```
 
@@ -43,15 +44,13 @@ $ firebase use --add
 
 and select the gym-bro project (you must requiere access to the project, see contact info)
 
-\**IMPORTANT: give a unique alias to the project. Use *gymbro\*
+\**IMPORTANT: give a unique alias to the project. Use the default name like alias.
 
 11. If you have windows OS, install Java and make sure that the Path configuration has the bin files.
 
 ## Running firebase locally:
 
 Running firebase emulators will allow you to run all the nest js app into the firebase functions, so you can use all the firebase services as the main infrastructure for this project.
-
-Go to ../functions on terminal, and type:
 
 ```bash
 $ npm run dev:firebase
@@ -61,14 +60,7 @@ This will start the firebase:emulators with all the services included in the fir
 
 \*\* In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
 
-You should see this kind of message on terminal if everything go rigth:
-
-![1](readme_images/1.png)
-This will start the firebase:emulators with all the services included in the firebase project like firestore, authentication, storage, and so...
-
-\*\* In Windows You must allow permission for windows. You'll see many Java windows opening. Do not close them.
-
-You should see this kind of message on terminal if everything go rigth:
+You should see some messages on terminal if everything go rigth:
 
 ![1](images/1.png)
 
