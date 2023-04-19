@@ -39,7 +39,6 @@ Add firebase project to the firebase CLI. You must being logged in so firebase c
 
 ```bash
 $ firebase use --add
-$ firebase use --add
 ```
 
 and select the gym-bro project (you must requiere access to the project, see contact info)
@@ -71,15 +70,12 @@ This will start the firebase:emulators with all the services included in the fir
 
 You should see this kind of message on terminal if everything go rigth:
 
-![1](readme_images/1.png)
+![1](images/1.png)
 
-![2](readme_images/2.png)
-![2](readme_images/2.png)
+![2](images/2.png)
 
 \*Note: The ports numbers may be differents if you configure them differently in your firebase.json file.
 \*Note: The ports numbers may be differents if you configure them differently in your firebase.json file.
-
-## Testing nest locally:
 
 ## Testing nest locally:
 
@@ -87,3 +83,5 @@ With postman or any other software like that, you can test the "Hello World from
 With postman or any other software like that, you can test the "Hello World from Nest Js" so you can see if the Nest js app was successfully embebbed into the firebase project"
 
 Request a GET to the url showed in functions green checklist line. It will be unique deppending on your project name and settings.
+
+![3](images/3.png)
