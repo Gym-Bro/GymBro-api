@@ -2,6 +2,8 @@ import { IEntity } from 'src/utils/interfaces/IEntity';
 import { RegisterUserRequestDto } from '../dto/register-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { createHash } from 'crypto';
+import { UUIDVersion } from 'class-validator';
+import { HttpException } from '@nestjs/common';
 export class User extends IEntity {
   first_name: string = null;
   last_name: string = null;
@@ -31,7 +33,12 @@ export class User extends IEntity {
 }
 
 export interface UserRepository {
-  findById(uuid: string): Promise<User | null>;
+  findById(
+    uuid: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  >;
   findByEmail(email: string): Promise<User | null>;
   create(
     user: User,

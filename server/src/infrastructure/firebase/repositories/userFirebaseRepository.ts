@@ -1,8 +1,9 @@
 import { CollectionReference } from 'firebase-admin/firestore';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
 import { User, UserRepository } from 'src/modules/user/entities/user.entity';
 import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { UUIDVersion } from 'class-validator';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {
@@ -12,11 +13,23 @@ export class UserFirebaseRepository implements UserRepository {
     this.userCollection = this.firebaseService.firestore.collection('users');
   }
 
-  async findById(id: string): Promise<User | null> {
-    // const userDoc = await this.userCollection.doc(id).get();
-    // return userDoc.exists ? (userDoc.data() as User) : null;
-    console.log('findById in user repo!');
-    return null;
+  async findById(
+    uuid: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  > {
+    try {
+      const userDoc = await this.userCollection.doc(uuid).get();
+      if (userDoc.exists) {
+        const user = Object.assign({}, userDoc.data() as User);
+        const { password, ...cleanUser } = user;
+        console.log(cleanUser);
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      return error;
+    }
   }
 
   async findByEmail(email: string): Promise<User | null> {
@@ -35,12 +48,12 @@ export class UserFirebaseRepository implements UserRepository {
     user: User,
   ): Promise<Pick<
     User,
-    'first_name' | 'last_name' | 'email' | 'photo_url'
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'
   > | null> {
     try {
       const userObj = Object.assign({}, user);
       await this.userCollection.doc(user.uuid).set(userObj);
-      const { password, uuid, ...cleanUser } = user;
+      const { password, ...cleanUser } = user;
       return cleanUser;
     } catch (error) {
       console.error(error);
