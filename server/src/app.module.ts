@@ -9,7 +9,13 @@ import { ContactModule } from './modules/contact/contact.module';
 
 @Module({
   controllers: [AppController],
-  imports: [AuthModule, FirebaseModule, UserModule, MailingModule, ContactModule],
+  imports: [
+    AuthModule,
+    FirebaseModule,
+    UserModule,
+    MailingModule,
+    ContactModule,
+  ],
 
   providers: [AppService],
 })

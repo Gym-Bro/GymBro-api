@@ -1,6 +1,7 @@
-import { IEntity } from 'src/utils/interfaces/IEntity';
+import { IEntity } from '../../../utils/interfaces/IEntity';
 import { CreateContactDto } from '../dto/create-contact.dto';
 import { UpdateContactDto } from '../dto/update-contact.dto';
+import { HttpException } from '@nestjs/common';
 export class Contact extends IEntity {
   title: string = null;
   email: string = null;
@@ -19,7 +20,7 @@ export class Contact extends IEntity {
 export interface ContactRepository {
   findById(uuid: string): Promise<Contact | null>;
   findByEmail(email: string): Promise<Contact | null>;
-  create(contact: Contact): Promise<Contact | null>;
+  create(contact: Contact): Promise<String | HttpException>;
   update(
     uuid: string,
     updateContact: UpdateContactDto,

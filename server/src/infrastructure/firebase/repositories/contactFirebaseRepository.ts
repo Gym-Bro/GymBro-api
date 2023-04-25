@@ -1,0 +1,57 @@
+import { CollectionReference } from 'firebase-admin/firestore';
+import { HttpException, Injectable } from '@nestjs/common';
+import { FirebaseService } from '../firebase.service';
+import {
+  Contact,
+  ContactRepository,
+} from 'src/modules/contact/entities/contact.entity';
+import { UpdateContactDto } from '../../../modules/contact/dto/update-contact.dto';
+
+@Injectable()
+export class ContactFirebaseRepository implements ContactRepository {
+  private readonly contactCollection: CollectionReference;
+
+  constructor(private readonly firebaseService: FirebaseService) {
+    this.contactCollection =
+      this.firebaseService.firestore.collection('contacts');
+  }
+
+  async findById(id: string): Promise<Contact | null> {
+    console.log('findById in contact repo!');
+    return null;
+  }
+
+  async findByEmail(email: string): Promise<Contact | null> {
+    console.log('findByEmail in contact repo!');
+    return null;
+  }
+
+  async create(contact: Contact): Promise<String | HttpException> {
+    try {
+      const contactObj = Object.assign({}, contact);
+      const result = await this.contactCollection
+        .doc(contact.uuid)
+        .set(contactObj);
+      console.log(result);
+      return 'Contact form added to database';
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  }
+
+  async update(
+    uuid: string,
+    contact: UpdateContactDto,
+  ): Promise<Contact | null> {
+    // await this.userCollection.doc(user.id).update(user);
+    console.log('update in contact repo!');
+    return null;
+  }
+
+  async delete(uuid: string): Promise<Contact | null> {
+    // await this.userCollection.doc(id).delete();
+    console.log('delete in contact repo!');
+    return null;
+  }
+}
