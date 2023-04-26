@@ -23,7 +23,6 @@ export class UserFirebaseRepository implements UserRepository {
       if (userDoc.exists) {
         const user = Object.assign({}, userDoc.data() as User);
         const { password, ...cleanUser } = user;
-        console.log(cleanUser);
         return cleanUser;
       } else throw new HttpException('User not found', 404);
     } catch (error) {

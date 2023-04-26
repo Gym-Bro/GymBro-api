@@ -26,10 +26,8 @@ export class ContactService {
         subject: contact.title,
         text: contact.body,
       };
-      const emailResult = (await this.mailingService.sendEmail(
-        message,
-      )) as string;
-      return result + emailResult;
+      await this.mailingService.sendEmail(message);
+      return `${result} and email send to admin@gymbro.com`;
     } catch (error) {
       return error;
     }
