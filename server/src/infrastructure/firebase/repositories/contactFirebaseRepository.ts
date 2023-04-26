@@ -29,14 +29,10 @@ export class ContactFirebaseRepository implements ContactRepository {
   async create(contact: Contact): Promise<String | HttpException> {
     try {
       const contactObj = Object.assign({}, contact);
-      const result = await this.contactCollection
-        .doc(contact.uuid)
-        .set(contactObj);
-      console.log(result);
-      return 'Contact form added to database';
+      await this.contactCollection.doc(contact.uuid).set(contactObj);
+      return `Contact form ${contact.email} added to database`;
     } catch (error) {
-      console.error(error);
-      return null;
+      return error;
     }
   }
 

@@ -19,15 +19,17 @@ export class ContactService {
     //return 'This action adds a new contact';
     try {
       const contact = new Contact(createContactDto);
-      await this.contactRepository.create(contact);
+      const result = await this.contactRepository.create(contact);
       const message: MailOptions = {
         from: contact.email,
         to: 'admin@gymbro.com',
         subject: contact.title,
         text: contact.body,
       };
-      await this.mailingService.sendEmail(message);
-      return 'Contact form sended to admin succesfully!';
+      const emailResult = (await this.mailingService.sendEmail(
+        message,
+      )) as string;
+      return result + emailResult;
     } catch (error) {
       return error;
     }
