@@ -2,9 +2,9 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UserFirebaseRepository } from 'src/infrastructure/firebase/repositories/userFirebaseRepository';
 import { UUIDVersion } from 'class-validator';
-import { FirebaseService } from 'src/infrastructure/firebase/firebase.service';
+import { UserFirebaseRepository } from 'infrastructure/firebase/repositories/userFirebaseRepository';
+import { FirebaseService } from 'infrastructure/firebase/firebase.service';
 
 @Injectable()
 export class UserService {

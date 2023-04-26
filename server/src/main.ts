@@ -33,8 +33,8 @@ createNestServer(server)
 server.options('*', cors());
 
 // Listen on localhost:3000
-server.listen(3001, () => {
-  console.log('Server listening on http://localhost:3001');
-});
+// server.listen(3001, () => {
+//   console.log('Server listening on http://localhost:3001');
+// });
 
 export const api = functions.https.onRequest(server);
