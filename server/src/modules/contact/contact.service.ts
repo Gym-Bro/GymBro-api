@@ -4,7 +4,7 @@ import { UpdateContactDto } from './dto/update-contact.dto';
 import { Contact } from './entities/contact.entity';
 import { MailingService } from './../../infrastructure/mailing/mailing.service';
 import { MailOptions } from './../../utils/interfaces/IMailing';
-import { ContactFirebaseRepository } from 'src/infrastructure/firebase/repositories/contactFirebaseRepository';
+import { ContactFirebaseRepository } from 'infrastructure/firebase/repositories/contactFirebaseRepository';
 
 @Injectable()
 export class ContactService {

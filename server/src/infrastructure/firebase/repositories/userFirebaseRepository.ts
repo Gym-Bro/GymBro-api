@@ -1,8 +1,8 @@
 import { CollectionReference } from 'firebase-admin/firestore';
 import { Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
-import { User, UserRepository } from 'src/modules/user/entities/user.entity';
-import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { User, UserRepository } from 'modules/user/entities/user.entity';
+import { UpdateUserDto } from 'modules/user/dto/update-user.dto';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {

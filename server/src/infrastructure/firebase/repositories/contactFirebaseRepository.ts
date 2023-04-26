@@ -1,11 +1,11 @@
 import { CollectionReference } from 'firebase-admin/firestore';
 import { HttpException, Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
+import { UpdateContactDto } from '../../../modules/contact/dto/update-contact.dto';
 import {
   Contact,
   ContactRepository,
-} from 'src/modules/contact/entities/contact.entity';
-import { UpdateContactDto } from '../../../modules/contact/dto/update-contact.dto';
+} from 'modules/contact/entities/contact.entity';
 
 @Injectable()
 export class ContactFirebaseRepository implements ContactRepository {

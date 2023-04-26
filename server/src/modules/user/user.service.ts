@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UserFirebaseRepository } from 'src/infrastructure/firebase/repositories/userFirebaseRepository';
+import { UserFirebaseRepository } from 'infrastructure/firebase/repositories/userFirebaseRepository';
 
 @Injectable()
 export class UserService {

@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { FirebaseService } from 'src/infrastructure/firebase/firebase.service';
 import { UserService } from '../user/user.service';
-import { MailingService } from 'src/infrastructure/mailing/mailing.service';
 import { RegisterUserRequestDto } from '../user/dto/register-user.dto';
 import { User } from '../user/entities/user.entity';
 import { template } from '../../infrastructure/mailing/templates/registration.template';
+import { FirebaseService } from 'infrastructure/firebase/firebase.service';
+import { MailingService } from 'infrastructure/mailing/mailing.service';
 @Injectable()
 export class AuthService {
   constructor(
