@@ -11,7 +11,7 @@ import {
 import { UserService } from './user.service';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { UUIDVersion } from 'class-validator';
+import { IsEmail, UUIDVersion } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -27,13 +27,13 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':uuid')
+  @Get(':email')
   findOne(
-    @Param('uuid') uuid: UUIDVersion,
+    @Param('email') email: string,
     @Headers('Authorization') authHeader: string,
   ) {
     const idToken = authHeader.split('Bearer ')[1];
-    return this.userService.findOne(uuid, idToken);
+    return this.userService.findOne(email, idToken);
   }
 
   @Patch(':uuid')

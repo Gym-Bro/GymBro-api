@@ -27,23 +27,22 @@ export class UserService {
   }
 
   async findOne(
-    uuid: UUIDVersion,
+    email: string,
     idToken: string,
   ): Promise<
     | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
     | HttpException
   > {
-    //return `This action returns a #${uuid} user with tokenId: ${idToken}`;
     const result = await this.firebaseService.auth.verifyIdToken(idToken);
-    if (result.uid) return this.userRepository.findById(uuid.toString());
+    if (result.uid) return this.userRepository.findByEmail(email);
     return null;
   }
 
-  update(uuid: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${uuid} user`;
+  update(email: string, updateUserDto: UpdateUserDto) {
+    return `This action updates a #${email} user`;
   }
 
-  remove(uuid: string) {
-    return `This action removes a #${uuid} user`;
+  remove(email: string) {
+    return `This action removes a #${email} user`;
   }
 }

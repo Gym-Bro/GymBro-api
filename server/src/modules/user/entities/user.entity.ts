@@ -39,7 +39,12 @@ export interface UserRepository {
     | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
     | HttpException
   >;
-  findByEmail(email: string): Promise<User | null>;
+  findByEmail(
+    email: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  >;
   create(
     user: User,
   ): Promise<Pick<

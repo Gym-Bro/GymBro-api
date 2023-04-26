@@ -30,16 +30,22 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    // const userQuery = await this.userCollection
-    //   .where('email', '==', email)
-    //   .get();
-    // if (userQuery.empty) {
-    //   return null;
-    // }
-    // return userQuery.docs[0].data() as User;
-    console.log('findByEmail in user repo!');
-    return null;
+  async findByEmail(
+    email: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | HttpException
+  > {
+    try {
+      const userDoc = await this.userCollection.doc(email).get();
+      if (userDoc.exists) {
+        const user = Object.assign({}, userDoc.data() as User);
+        const { password, ...cleanUser } = user;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      return error;
+    }
   }
 
   async create(
@@ -50,7 +56,7 @@ export class UserFirebaseRepository implements UserRepository {
   > | null> {
     try {
       const userObj = Object.assign({}, user);
-      await this.userCollection.doc(user.uuid).set(userObj);
+      await this.userCollection.doc(user.email).set(userObj);
       const { password, ...cleanUser } = user;
       return cleanUser;
     } catch (error) {
