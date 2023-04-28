@@ -11,6 +11,7 @@ export class User extends IEntity {
   password: string = null;
   photo_url: string = null;
   providerId: string = null;
+  birth_date: Date = null;
 
   constructor(registerUser: RegisterUserRequestDto) {
     super();
