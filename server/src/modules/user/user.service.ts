@@ -2,7 +2,6 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { UUIDVersion } from 'class-validator';
 import { UserFirebaseRepository } from 'infrastructure/firebase/repositories/userFirebaseRepository';
 import { FirebaseService } from 'infrastructure/firebase/firebase.service';
 
@@ -39,7 +38,9 @@ export class UserService {
   }
 
   update(email: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${email} user`;
+    return `This action updates a #${email} user with: ${JSON.stringify(
+      updateUserDto,
+    )}`;
   }
 
   remove(email: string) {

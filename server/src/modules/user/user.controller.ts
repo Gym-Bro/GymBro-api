@@ -11,7 +11,6 @@ import {
 import { UserService } from './user.service';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IsEmail, UUIDVersion } from 'class-validator';
 
 @Controller('user')
 export class UserController {
@@ -36,9 +35,9 @@ export class UserController {
     return this.userService.findOne(email, idToken);
   }
 
-  @Patch(':uuid')
-  update(@Param('uuid') uuid: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(uuid, updateUserDto);
+  @Patch(':email')
+  update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.userService.update(email, updateUserDto);
   }
 
   @Delete(':uuid')
