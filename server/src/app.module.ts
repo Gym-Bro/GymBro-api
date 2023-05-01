@@ -6,6 +6,7 @@ import { FirebaseModule } from './infrastructure/firebase/firebase.module';
 import { UserModule } from './modules/user/user.module';
 import { MailingModule } from './infrastructure/mailing/mailing.module';
 import { ContactModule } from './modules/contact/contact.module';
+import { FilesModule } from 'infrastructure/files/files.module';
 
 @Module({
   controllers: [AppController],
@@ -15,6 +16,7 @@ import { ContactModule } from './modules/contact/contact.module';
     UserModule,
     MailingModule,
     ContactModule,
+    FilesModule,
   ],
 
   providers: [AppService],
