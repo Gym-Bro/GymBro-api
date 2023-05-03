@@ -33,9 +33,7 @@ export class AppController {
   public async fileUpload(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    const randomName = Math.random().toString(36).substring(2);
-    const filename = `${randomName}.${file.originalname.split('.').pop()}`;
-    await this.fileService.processFile(filename, file);
-    return `Archivo ${filename} subido correctamente.`;
+    console.log('file:', file);
+    return `File uploaded succesfully.`;
   }
 }

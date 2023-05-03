@@ -7,6 +7,9 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cors from 'cors';
 import * as morgan from 'morgan'; // Import morgan middleware
 
+import { config } from 'dotenv';
+config();
+
 const server = express();
 server.use(cors());
 server.use(morgan('dev')); // Use morgan middleware with 'dev' format
@@ -34,8 +37,10 @@ createNestServer(server)
 server.options('*', cors());
 
 // Listen on localhost:3000
-// server.listen(3001, () => {
-//   console.log('Server listening on http://localhost:3001');
-// });
+if (process.env.DEV == 'nest') {
+  server.listen(3001, () => {
+    console.log('Server listening on http://localhost:3001');
+  });
+}
 
 export const api = functions.https.onRequest(server);
