@@ -2,19 +2,21 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
   Post,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
 import { AppService } from './app.service';
-import { FilesService } from 'infrastructure/files/files.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { imageMulterOption } from 'utils/interceptors/image.multerOption';
+import { StorageService } from 'infrastructure/storage/storage.service';
 
 @Controller()
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private readonly fileService: FilesService,
+    private readonly storageService: StorageService,
   ) {}
 
   @Get()
@@ -29,11 +31,11 @@ export class AppController {
   }
 
   @Post('file')
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(FileInterceptor('file', imageMulterOption))
   public async fileUpload(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    console.log('file:', file);
+    //await this.fileService.processFile(file);
     return `File uploaded succesfully.`;
   }
 }
