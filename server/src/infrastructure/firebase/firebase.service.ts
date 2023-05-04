@@ -8,8 +8,10 @@ export class FirebaseService {
   public firebaseApp: admin.app.App;
   public auth: admin.auth.Auth;
   public firestore: admin.firestore.Firestore;
+  // public userCollection: CollectionReference;
+  // public contactCollection: CollectionReference;
+  public store: admin.storage.Storage;
 
-  public userCollection: CollectionReference;
   constructor() {
     // this.serviceAccount = require('./../../../firebase_sdk.json');
     this.firebaseApp = admin.initializeApp({
@@ -20,17 +22,7 @@ export class FirebaseService {
     });
     this.auth = this.firebaseApp.auth();
     this.firestore = this.firebaseApp.firestore();
-    this._createCollections();
+    //this._createCollections();
+    this.store = this.firebaseApp.storage();
   }
-
-  private _createCollections() {
-    this.userCollection = this.firestore.collection('users');
-  }
-  // public initFirestoreDatabase() {
-  //   return this.firebaseApp.firestore();
-  // }
-
-  // public initAuth() {
-  //   return this.firebaseApp.auth();
-  // }
 }
