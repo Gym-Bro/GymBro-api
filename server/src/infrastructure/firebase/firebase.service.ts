@@ -10,7 +10,7 @@ export class FirebaseService {
   public firestore: admin.firestore.Firestore;
   // public userCollection: CollectionReference;
   // public contactCollection: CollectionReference;
-  public store: admin.storage.Storage;
+  public storage: admin.storage.Storage;
 
   constructor() {
     // this.serviceAccount = require('./../../../firebase_sdk.json');
@@ -23,6 +23,6 @@ export class FirebaseService {
     this.auth = this.firebaseApp.auth();
     this.firestore = this.firebaseApp.firestore();
     //this._createCollections();
-    this.store = this.firebaseApp.storage();
+    this.storage = this.firebaseApp.storage();
   }
 }

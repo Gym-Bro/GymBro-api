@@ -35,7 +35,8 @@ export class AppController {
   public async fileUpload(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    //await this.fileService.processFile(file);
+    console.log(file);
+    await this.storageService.uploadFile(file);
     return `File uploaded succesfully.`;
   }
 }

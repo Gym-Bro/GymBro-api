@@ -4,6 +4,7 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 export const imageMulterOption: MulterOptions = {
   limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB
   fileFilter: (_req, file, cb) => {
+    console.log(file);
     if (['image/jpeg', 'image/png'].includes(file.mimetype))
       return cb(null, true);
     else

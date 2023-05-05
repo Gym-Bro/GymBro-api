@@ -10,7 +10,7 @@
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
     "start:dev": "DEV=nest nest start --watch",
-    "dev:firebase": "nodemon --legacy-watch --watch src --exec \"npm run build && firebase emulators:start --only functions,auth,firestore --config ./../firebase.json\" --signal SIGINT",
+    "dev:firebase": "nodemon --legacy-watch --watch src --exec \"npm run build && firebase emulators:start --only functions,auth,firestore,storage --config ./../firebase.json\" --signal SIGINT",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
