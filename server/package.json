@@ -9,7 +9,7 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "node dist/main.js",
-    "start:dev": "nest start --watch",
+    "start:dev": "DEV=nest nest start --watch",
     "dev:firebase": "nodemon --legacy-watch --watch src --exec \"npm run build && firebase emulators:start --only functions,firestore,auth --config ./../firebase.json\" --signal SIGINT",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -40,7 +40,8 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
     "cors": "^2.8.5",
-    "firebase-functions": "^4.3.0",
+    "dotenv": "^16.0.3",
+    "firebase-functions": "^4.3.1",
     "morgan": "^1.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
