@@ -19,6 +19,7 @@ export class FirebaseService {
       // databaseURL: 'https://gymbro-27bb2-default-rtdb.firebaseio.com',
       credential: admin.credential.applicationDefault(),
       databaseURL: 'localhost:8080',
+      storageBucket: 'gymbro-27bb2.appspot.com',
     });
     this.auth = this.firebaseApp.auth();
     this.firestore = this.firebaseApp.firestore();

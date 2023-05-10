@@ -4,10 +4,10 @@ import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer
 export const imageMulterOption: MulterOptions = {
   limits: { fileSize: 1024 * 1024 * 5 }, // 5 MB
   fileFilter: (_req, file, cb) => {
-    console.log(file);
-    if (['image/jpeg', 'image/png'].includes(file.mimetype))
+    if (['image/jpeg', 'image/png'].includes(file.mimetype)) {
+      console.log('Interceptor is running!');
       return cb(null, true);
-    else
+    } else
       return cb(
         new HttpException('Only JPEG and PNG files are allowed', 400),
         false,

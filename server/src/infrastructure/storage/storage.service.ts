@@ -4,7 +4,7 @@ import { StorageFirebaseRepository } from 'infrastructure/firebase/repositories/
 @Injectable()
 export class StorageService {
   constructor(private readonly storageRepository: StorageFirebaseRepository) {}
-  async uploadFile(file): Promise<string | HttpException> {
+  async uploadFile(file: Express.Multer.File): Promise<string | HttpException> {
     return await this.storageRepository.uploadFile(file);
   }
 }

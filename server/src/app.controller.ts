@@ -4,6 +4,7 @@ import {
   Get,
   HttpException,
   Post,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,11 +33,11 @@ export class AppController {
 
   @Post('file')
   @UseInterceptors(FileInterceptor('file', imageMulterOption))
-  public async fileUpload(
+  public async uploadFile(
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<string> {
-    console.log(file);
-    await this.storageService.uploadFile(file);
-    return `File uploaded succesfully.`;
+    @Req() req: Request,
+  ): Promise<string | HttpException> {
+    console.log(req.headers);
+    return await this.storageService.uploadFile(file);
   }
 }

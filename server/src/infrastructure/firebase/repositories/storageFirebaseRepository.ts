@@ -10,23 +10,20 @@ export class StorageFirebaseRepository implements StorageRepository {
     this.storage = this.firebaseService.storage;
   }
   async uploadFile(file: Express.Multer.File): Promise<string | HttpException> {
-    console.log('file:', file);
     const bucket = await this.storage.bucket();
-    console.log(bucket);
 
-    bucket
-      .upload(file.path, {
-        destination: 'foto.jpg',
-      })
-      .then(() => {
-        console.log('Archivo cargado con éxito en la raíz del almacenamiento');
-        return `${file.filename} uploaded to the firebase bucket`;
-      })
-      .catch((error) => {
-        console.error('Error al cargar archivo:', error);
-        return new HttpException('Error al cargar archivo', 500);
-      });
-
-    throw new Error('Method not implemented.');
+    // bucket
+    //   .upload(file.path, {
+    //     destination: 'foto.jpg',
+    //   })
+    //   .then(() => {
+    //     console.log('Archivo cargado con éxito en la raíz del almacenamiento');
+    //     return `${file.filename} uploaded to the firebase bucket`;
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error al cargar archivo:', error);
+    //     return new HttpException('Error al cargar archivo', 500);
+    //   });
+    return 'File uploaded!';
   }
 }

@@ -8,11 +8,15 @@ import * as cors from 'cors';
 import * as morgan from 'morgan'; // Import morgan middleware
 
 import { config } from 'dotenv';
+
 config();
 
 const server = express();
 server.use(cors());
+server.use(express.json({ limit: '50mb' }));
+server.use(express.urlencoded({ extended: false, limit: '50mb' }));
 server.use(morgan('dev')); // Use morgan middleware with 'dev' format
+
 const createNestServer = async (expressInstance) => {
   const app = await NestFactory.create(
     AppModule,
@@ -32,9 +36,6 @@ const createNestServer = async (expressInstance) => {
 createNestServer(server)
   .then((v) => console.log('Nest Ready'))
   .catch((err) => console.error('Nest broken', err));
-
-// Handle OPTIONS requests
-server.options('*', cors());
 
 // Listen on localhost:3000
 if (process.env.DEV == 'nest') {
