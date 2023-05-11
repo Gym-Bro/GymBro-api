@@ -15,7 +15,7 @@ export class UserService {
     registerUser: RegisterUserRequestDto,
   ): Promise<Pick<
     User,
-    'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
   > | null> {
     const user = new User(registerUser);
     return await this.userRepository.create(user);
@@ -29,7 +29,7 @@ export class UserService {
     email: string,
     idToken: string,
   ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   > {
     const result = await this.firebaseService.auth.verifyIdToken(idToken);
@@ -37,10 +37,15 @@ export class UserService {
     return null;
   }
 
-  update(email: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${email} user with: ${JSON.stringify(
-      updateUserDto,
-    )}`;
+  async update(idToken: string, email: string, updateUserDto: UpdateUserDto) {
+    try {
+      const result = await this.firebaseService.auth.verifyIdToken(idToken);
+      if (result.uid)
+        return await this.userRepository.update(email, updateUserDto);
+      return null;
+    } catch (error) {
+      return error;
+    }
   }
 
   remove(email: string) {

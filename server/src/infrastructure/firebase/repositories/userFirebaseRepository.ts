@@ -15,7 +15,7 @@ export class UserFirebaseRepository implements UserRepository {
   async findById(
     uuid: string,
   ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   > {
     try {
@@ -33,7 +33,7 @@ export class UserFirebaseRepository implements UserRepository {
   async findByEmail(
     email: string,
   ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   > {
     try {
@@ -52,7 +52,7 @@ export class UserFirebaseRepository implements UserRepository {
     user: User,
   ): Promise<Pick<
     User,
-    'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
   > | null> {
     try {
       const userObj = Object.assign({}, user);
@@ -65,10 +65,26 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async update(uuid: string, user: UpdateUserDto): Promise<User | null> {
-    // await this.userCollection.doc(user.id).update(user);
-    console.log('update in user repo!');
-    return null;
+  async update(
+    email: string,
+    user: UpdateUserDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  > {
+    try {
+      const result = await this.userCollection.doc(email).update({ ...user });
+      console.log('result', result);
+      const userResult = await this.userCollection.doc(email).get();
+      if (userResult.exists) {
+        const userUpdated = Object.assign({}, userResult.data() as User);
+        const { password, ...cleanUser } = userUpdated;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   async delete(uuid: string): Promise<User | null> {

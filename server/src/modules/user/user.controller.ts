@@ -36,8 +36,13 @@ export class UserController {
   }
 
   @Patch(':email')
-  update(@Param('email') email: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(email, updateUserDto);
+  update(
+    @Param('email') email: string,
+    @Headers('Authorization') authHeader: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    const idToken = authHeader.split('Bearer ')[1];
+    return this.userService.update(idToken, email, updateUserDto);
   }
 
   @Delete(':uuid')

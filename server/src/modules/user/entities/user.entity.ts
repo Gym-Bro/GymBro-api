@@ -9,7 +9,7 @@ export class User extends IEntity {
   last_name: string = null;
   email: string = null;
   password: string = null;
-  photo_url: string = null;
+  photoURL: string = null;
   providerId: string = null;
   birth_date: Date = null;
 
@@ -23,7 +23,7 @@ export class User extends IEntity {
       'sha256',
       'hex',
     );
-    this.photo_url = registerUser.photoURL || null;
+    this.photoURL = registerUser.photoURL || null;
     this.providerId = registerUser.providerId;
   }
 
@@ -37,21 +37,27 @@ export interface UserRepository {
   findById(
     uuid: string,
   ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   >;
   findByEmail(
     email: string,
   ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   >;
   create(
     user: User,
   ): Promise<Pick<
     User,
-    'first_name' | 'last_name' | 'email' | 'photo_url'
+    'first_name' | 'last_name' | 'email' | 'photoURL'
   > | null>;
-  update(uuid: string, updateProductDto: UpdateUserDto): Promise<User | null>;
+  update(
+    uuid: string,
+    updateProductDto: UpdateUserDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  >;
   delete(uuid: string): Promise<User | null>;
 }
