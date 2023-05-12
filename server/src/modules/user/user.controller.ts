@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Headers,
+  HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
@@ -31,8 +32,14 @@ export class UserController {
     @Param('email') email: string,
     @Headers('Authorization') authHeader: string,
   ) {
-    const idToken = authHeader.split('Bearer ')[1];
-    return this.userService.findOne(email, idToken);
+    try {
+      const idToken = authHeader?.split('Bearer ')[1];
+      if (idToken) return this.userService.findOne(email, idToken);
+      else throw new HttpException('No token id provided', 400);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
   @Patch(':email')
@@ -41,8 +48,15 @@ export class UserController {
     @Headers('Authorization') authHeader: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
-    const idToken = authHeader.split('Bearer ')[1];
-    return this.userService.update(idToken, email, updateUserDto);
+    try {
+      const idToken = authHeader?.split('Bearer ')[1];
+      if (idToken)
+        return this.userService.update(idToken, email, updateUserDto);
+      else throw new HttpException('No token id provided', 400);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
   @Delete(':uuid')
