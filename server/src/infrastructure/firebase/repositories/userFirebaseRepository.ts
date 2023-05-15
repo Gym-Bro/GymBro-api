@@ -3,6 +3,7 @@ import { HttpException, Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
 import { User, UserRepository } from 'modules/user/entities/user.entity';
 import { UpdateUserDto } from 'modules/user/dto/update-user.dto';
+import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {
@@ -83,6 +84,37 @@ export class UserFirebaseRepository implements UserRepository {
       } else throw new HttpException('User not found', 404);
     } catch (error) {
       console.error(error);
+      return error;
+    }
+  }
+
+  async resetEmail(
+    email: string,
+    emailResetUser: EmailResetDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  > {
+    try {
+      const oldEmailUser = (await this.userCollection.doc(email).get()).data();
+
+      await this.userCollection
+        .doc(emailResetUser.new_email)
+        .set({ ...oldEmailUser, email: emailResetUser.new_email });
+
+      await this.userCollection.doc(email).delete();
+
+      const userResult = await this.userCollection
+        .doc(emailResetUser.new_email)
+        .get();
+
+      if (userResult.exists) {
+        const userUpdated = Object.assign({}, userResult.data() as User);
+        const { password, ...cleanUser } = userUpdated;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      console.log(error);
       return error;
     }
   }

@@ -1,9 +1,10 @@
 import { IEntity } from 'utils/interfaces/IEntity';
-import { RegisterUserRequestDto } from '../dto/register-user.dto';
+import { RegisterUserRequestDto } from '../../auth/dto/register-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { createHash } from 'crypto';
 import { UUIDVersion } from 'class-validator';
 import { HttpException } from '@nestjs/common';
+import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
 export class User extends IEntity {
   first_name: string = null;
   last_name: string = null;
@@ -54,7 +55,14 @@ export interface UserRepository {
   > | null>;
   update(
     uuid: string,
-    updateProductDto: UpdateUserDto,
+    updateUserDto: UpdateUserDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  >;
+  resetEmail(
+    email: string,
+    emailResetUser: EmailResetDto,
   ): Promise<
     | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException

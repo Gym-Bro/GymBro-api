@@ -1,10 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
-import { RegisterUserRequestDto } from '../user/dto/register-user.dto';
+import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { User } from '../user/entities/user.entity';
 import { template } from '../../infrastructure/mailing/templates/registration.template';
 import { FirebaseService } from 'infrastructure/firebase/firebase.service';
 import { MailingService } from 'infrastructure/mailing/mailing.service';
+import { EmailResetDto } from './dto/email-reset.dto';
 @Injectable()
 export class AuthService {
   constructor(
@@ -70,6 +71,28 @@ export class AuthService {
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       }
+    }
+  }
+
+  public async resetEmail(emailResetUser: EmailResetDto, idToken: string) {
+    try {
+      await this.firebaseService.auth.verifyIdToken(idToken);
+      const user = await this.firebaseService.auth.getUserByEmail(
+        emailResetUser.email,
+      );
+      await this.firebaseService.auth.updateUser(user.uid, {
+        email: emailResetUser.new_email,
+        emailVerified: false,
+        password: emailResetUser.password,
+      });
+      const verificationLink =
+        await this.firebaseService.auth.generateEmailVerificationLink(
+          emailResetUser.new_email,
+        );
+      const resetUser = await this.userService.resetEmail(emailResetUser);
+      return { resetUser, verificationLink };
+    } catch (error) {
+      return error;
     }
   }
 }

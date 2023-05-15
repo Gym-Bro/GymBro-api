@@ -10,7 +10,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { RegisterUserRequestDto } from './dto/register-user.dto';
+import { RegisterUserRequestDto } from '../auth/dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
