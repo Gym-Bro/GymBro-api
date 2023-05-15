@@ -9,9 +9,9 @@ import {
   MinLength,
   Validate,
 } from 'class-validator';
-import { PasswordMatchConstraint } from './../../../utils/validators.utils';
-import { MESSAGES } from './../../../utils/messages.utils';
-import { REGEX } from './../../../utils/regex.utils';
+import { PasswordMatchConstraint } from '../../../utils/validators.utils';
+import { MESSAGES } from '../../../utils/messages.utils';
+import { REGEX } from '../../../utils/regex.utils';
 
 export class RegisterUserRequestDto {
   @IsString()
