@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { FirebaseService } from 'src/infrastructure/firebase/firebase.service';
 import { UserService } from '../user/user.service';
-import { MailingService } from 'src/infrastructure/mailing/mailing.service';
 import { RegisterUserRequestDto } from '../user/dto/register-user.dto';
 import { User } from '../user/entities/user.entity';
 import { template } from '../../infrastructure/mailing/templates/registration.template';
+import { FirebaseService } from 'infrastructure/firebase/firebase.service';
+import { MailingService } from 'infrastructure/mailing/mailing.service';
 @Injectable()
 export class AuthService {
   constructor(
@@ -17,7 +17,7 @@ export class AuthService {
     registerUser: RegisterUserRequestDto,
     idToken,
   ): Promise<
-    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   > {
     try {
@@ -44,7 +44,7 @@ export class AuthService {
     email: string,
     idToken: string,
   ): Promise<
-    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photo_url'>
+    | Pick<User, 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   > {
     try {
@@ -57,8 +57,8 @@ export class AuthService {
       if (userQuery.empty) {
         throw new HttpException('email user not found', HttpStatus.NOT_FOUND);
       }
-      const { first_name, last_name, photo_url } = userQuery.docs[0].data();
-      return { email, first_name, last_name, photo_url };
+      const { first_name, last_name, photoURL } = userQuery.docs[0].data();
+      return { email, first_name, last_name, photoURL };
     } catch (error) {
       if (error instanceof HttpException) {
         return error;

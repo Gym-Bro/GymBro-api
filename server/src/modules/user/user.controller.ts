@@ -6,6 +6,8 @@ import {
   Patch,
   Param,
   Delete,
+  Headers,
+  HttpException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
@@ -25,18 +27,40 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  @Get(':email')
+  findOne(
+    @Param('email') email: string,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    try {
+      const idToken = authHeader?.split('Bearer ')[1];
+      if (idToken) return this.userService.findOne(email, idToken);
+      else throw new HttpException('No token id provided', 400);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  @Patch(':email')
+  update(
+    @Param('email') email: string,
+    @Headers('Authorization') authHeader: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    try {
+      const idToken = authHeader?.split('Bearer ')[1];
+      if (idToken)
+        return this.userService.update(idToken, email, updateUserDto);
+      else throw new HttpException('No token id provided', 400);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  @Delete(':uuid')
+  remove(@Param('uuid') uuid: string) {
+    return this.userService.remove(uuid);
   }
 }

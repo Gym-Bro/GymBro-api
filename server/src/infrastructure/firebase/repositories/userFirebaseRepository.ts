@@ -1,8 +1,8 @@
 import { CollectionReference } from 'firebase-admin/firestore';
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
-import { User, UserRepository } from 'src/modules/user/entities/user.entity';
-import { UpdateUserDto } from 'src/modules/user/dto/update-user.dto';
+import { User, UserRepository } from 'modules/user/entities/user.entity';
+import { UpdateUserDto } from 'modules/user/dto/update-user.dto';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {
@@ -12,35 +12,52 @@ export class UserFirebaseRepository implements UserRepository {
     this.userCollection = this.firebaseService.firestore.collection('users');
   }
 
-  async findById(id: string): Promise<User | null> {
-    // const userDoc = await this.userCollection.doc(id).get();
-    // return userDoc.exists ? (userDoc.data() as User) : null;
-    console.log('findById in user repo!');
-    return null;
+  async findById(
+    uuid: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  > {
+    try {
+      const userDoc = await this.userCollection.doc(uuid).get();
+      if (userDoc.exists) {
+        const user = Object.assign({}, userDoc.data() as User);
+        const { password, ...cleanUser } = user;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      return error;
+    }
   }
 
-  async findByEmail(email: string): Promise<User | null> {
-    // const userQuery = await this.userCollection
-    //   .where('email', '==', email)
-    //   .get();
-    // if (userQuery.empty) {
-    //   return null;
-    // }
-    // return userQuery.docs[0].data() as User;
-    console.log('findByEmail in user repo!');
-    return null;
+  async findByEmail(
+    email: string,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  > {
+    try {
+      const userDoc = await this.userCollection.doc(email).get();
+      if (userDoc.exists) {
+        const user = Object.assign({}, userDoc.data() as User);
+        const { password, ...cleanUser } = user;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      return error;
+    }
   }
 
   async create(
     user: User,
   ): Promise<Pick<
     User,
-    'first_name' | 'last_name' | 'email' | 'photo_url'
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
   > | null> {
     try {
       const userObj = Object.assign({}, user);
-      await this.userCollection.doc(user.uuid).set(userObj);
-      const { password, uuid, ...cleanUser } = user;
+      await this.userCollection.doc(user.email).set(userObj);
+      const { password, ...cleanUser } = user;
       return cleanUser;
     } catch (error) {
       console.error(error);
@@ -48,10 +65,26 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async update(uuid: string, user: UpdateUserDto): Promise<User | null> {
-    // await this.userCollection.doc(user.id).update(user);
-    console.log('update in user repo!');
-    return null;
+  async update(
+    email: string,
+    user: UpdateUserDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  > {
+    try {
+      const result = await this.userCollection.doc(email).update({ ...user });
+      console.log('result', result);
+      const userResult = await this.userCollection.doc(email).get();
+      if (userResult.exists) {
+        const userUpdated = Object.assign({}, userResult.data() as User);
+        const { password, ...cleanUser } = userUpdated;
+        return cleanUser;
+      } else throw new HttpException('User not found', 404);
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   async delete(uuid: string): Promise<User | null> {
