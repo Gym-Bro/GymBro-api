@@ -76,15 +76,21 @@ export class AuthService {
 
   public async resetEmail(emailResetUser: EmailResetDto, idToken: string) {
     try {
-      await this.firebaseService.auth.verifyIdToken(idToken);
-      const user = await this.firebaseService.auth.getUserByEmail(
+      const userAuth = await this.firebaseService.auth.getUserByEmail(
         emailResetUser.email,
       );
-      await this.firebaseService.auth.updateUser(user.uid, {
+
+      await this.userService.checkPassword(
+        emailResetUser.email,
+        emailResetUser.password,
+      );
+
+      await this.firebaseService.auth.updateUser(userAuth.uid, {
         email: emailResetUser.new_email,
         emailVerified: false,
-        password: emailResetUser.password,
+        password: emailResetUser.new_password,
       });
+
       const verificationLink =
         await this.firebaseService.auth.generateEmailVerificationLink(
           emailResetUser.new_email,

@@ -4,6 +4,7 @@ import { FirebaseService } from '../firebase.service';
 import { User, UserRepository } from 'modules/user/entities/user.entity';
 import { UpdateUserDto } from 'modules/user/dto/update-user.dto';
 import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
+import { createHash } from 'crypto';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {
@@ -96,11 +97,26 @@ export class UserFirebaseRepository implements UserRepository {
     | HttpException
   > {
     try {
-      const oldEmailUser = (await this.userCollection.doc(email).get()).data();
+      const oldEmailUser = await Object.assign(
+        {},
+        (await this.userCollection.doc(email).get()).data() as User,
+      );
+
+      let newUserData = new User({
+        ...oldEmailUser,
+        email: emailResetUser.new_email,
+      });
+
+      if (emailResetUser.new_password) {
+        newUserData = new User({
+          ...newUserData,
+          password: emailResetUser.new_password,
+        });
+      }
 
       await this.userCollection
         .doc(emailResetUser.new_email)
-        .set({ ...oldEmailUser, email: emailResetUser.new_email });
+        .set(Object.assign({}, newUserData));
 
       await this.userCollection.doc(email).delete();
 
@@ -123,5 +139,24 @@ export class UserFirebaseRepository implements UserRepository {
     // await this.userCollection.doc(id).delete();
     console.log('delete in user repo!');
     return null;
+  }
+
+  async checkPassword(
+    email: string,
+    password: string,
+  ): Promise<boolean | HttpException> {
+    try {
+      const user = Object.assign(
+        {},
+        (await this.userCollection.doc(email).get()).data() as User,
+      );
+
+      const hash = createHash('sha256').update(password).digest('hex');
+
+      return user.password === hash;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 }

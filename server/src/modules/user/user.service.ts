@@ -69,4 +69,8 @@ export class UserService {
   remove(email: string) {
     return `This action removes a #${email} user`;
   }
+
+  checkPassword(email: string, password: string) {
+    return this.userRepository.checkPassword(email, password);
+  }
 }
