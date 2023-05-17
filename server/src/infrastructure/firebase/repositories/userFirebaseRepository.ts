@@ -1,8 +1,9 @@
 import { CollectionReference } from 'firebase-admin/firestore';
 import { HttpException, Injectable } from '@nestjs/common';
 import { FirebaseService } from '../firebase.service';
-import { User, UserRepository } from 'modules/user/entities/user.entity';
+import { User, UserClean } from 'modules/user/entities/user.entity';
 import { UpdateUserDto } from 'modules/user/dto/update-user.dto';
+import { UserRepository } from 'modules/user/repositories/user.repository';
 
 @Injectable()
 export class UserFirebaseRepository implements UserRepository {
@@ -48,17 +49,11 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async create(
-    user: User,
-  ): Promise<Pick<
-    User,
-    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
-  > | null> {
+  async create(user: User): Promise<UserClean> {
     try {
       const userObj = Object.assign({}, user);
       await this.userCollection.doc(user.email).set(userObj);
-      const { password, ...cleanUser } = user;
-      return cleanUser;
+      return new UserClean(userObj);
     } catch (error) {
       console.error(error);
       return null;
