@@ -3,30 +3,9 @@ import { User } from '../entities/user.entity';
 import { UpdateUserDto } from '../dto/update-user.dto';
 
 export interface UserRepository {
-  findById(
-    uuid: string,
-  ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
-    | HttpException
-  >;
-  findByEmail(
-    email: string,
-  ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
-    | HttpException
-  >;
-  create(
-    user: User,
-  ): Promise<Pick<
-    User,
-    'first_name' | 'last_name' | 'email' | 'photoURL'
-  > | null>;
-  update(
-    uuid: string,
-    updateProductDto: UpdateUserDto,
-  ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
-    | HttpException
-  >;
-  delete(uuid: string): Promise<User | null>;
+  findById(uid: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  create(user: User): Promise<User | null>;
+  update(uid: string, user: User): Promise<User | null>;
+  delete(uid: string): Promise<any | null>;
 }

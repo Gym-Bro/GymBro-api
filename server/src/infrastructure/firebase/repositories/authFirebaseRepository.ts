@@ -1,9 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { User, UserClean } from 'modules/user/entities/user.entity';
 import { UserAuthRepository } from 'modules/user/repositories/userAuth.repository';
 import { FirebaseService } from '../firebase.service';
 import { auth } from 'firebase-admin';
 import { RegisterUserRequestDto } from 'modules/user/dto/register-user.dto';
+import { UserRecord } from 'firebase-functions/v1/auth';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthFirebaseRepository implements UserAuthRepository {
@@ -13,25 +14,41 @@ export class AuthFirebaseRepository implements UserAuthRepository {
     this.userAuth = this.firebaseService.auth;
   }
 
-  async register(registerUser: RegisterUserRequestDto): Promise<User> {
-    try {
-      const result = await this.userAuth.createUser({
-        email: registerUser.email,
-        password: registerUser.password,
-      });
-      if (result.uid) return new User(registerUser);
-      else throw Error('Cannot register user in Firebase!');
-    } catch (error) {
-      console.log(error);
-      return error.message;
-    }
+  async createCustomToken(uid: string): Promise<string> {
+    return await this.userAuth.createCustomToken(uid);
+    throw new Error('Method not implemented.');
+  }
 
-    throw new Error('Method not implemented.');
+  async getUser(uid: string): Promise<UserRecord> {
+    return await this.userAuth.getUser(uid);
   }
-  login(email: string, password: string): Promise<User> {
-    throw new Error('Method not implemented.');
+
+  async resetEmailAndPassword(
+    uid: string,
+    newEmail: string,
+    newPassword?: string,
+  ): Promise<UserRecord> {
+    const result = await this.userAuth.updateUser(uid, {
+      email: newEmail,
+      password: newPassword,
+    });
+    return result;
   }
-  verifyToken(token: string): Promise<boolean> {
-    throw new Error('Method not implemented.');
+
+  async register(registerUser: RegisterUserRequestDto): Promise<UserRecord> {
+    const result = await this.userAuth.createUser({
+      email: registerUser.email,
+      password: registerUser.password,
+    });
+    if (result.uid) return result;
+    else throw Error('Cannot register user in Firebase!');
+  }
+  async login(email: string, password: string): Promise<UserRecord> {
+    const result = await this.userAuth.getUserByEmail(email);
+    if (bcrypt.compare(password, result.passwordHash)) return result;
+    else throw new Error('Password or email not match!');
+  }
+  async verifyToken(token: string): Promise<any> {
+    return await this.userAuth.verifyIdToken(token);
   }
 }

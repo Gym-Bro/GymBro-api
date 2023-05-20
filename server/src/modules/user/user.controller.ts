@@ -8,18 +8,41 @@ import {
   Delete,
   Headers,
   HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { RegisterUserRequestDto } from './dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { EmailResetDto } from './dto/reset-email.dto';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() registerUser: RegisterUserRequestDto) {
-    return this.userService.create(registerUser);
+  @Post('signup')
+  create(
+    @Body() registerUser: RegisterUserRequestDto,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    const idToken = authHeader?.split('Bearer ')[1];
+    if (idToken) return this.userService.signUp(registerUser, idToken);
+    else throw new HttpException('No token id provided', 400);
+  }
+
+  @Post('resetEmail')
+  public resetEmail(
+    @Body()
+    emailResetUser: EmailResetDto,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    const idToken = authHeader?.split('Bearer ')[1];
+    if (idToken)
+      return this.userService.resetEmailUser(emailResetUser, idToken);
+    else
+      throw new HttpException(
+        'you must provide an id token in header request',
+        HttpStatus.UNAUTHORIZED,
+      );
   }
 
   @Get()
@@ -27,14 +50,14 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':email')
+  @Get(':uid')
   findOne(
-    @Param('email') email: string,
+    @Param('uid') uid: string,
     @Headers('Authorization') authHeader: string,
   ) {
     try {
       const idToken = authHeader?.split('Bearer ')[1];
-      if (idToken) return this.userService.findOne(email, idToken);
+      if (idToken) return this.userService.getProfile(uid, idToken);
       else throw new HttpException('No token id provided', 400);
     } catch (error) {
       console.log(error);
@@ -42,16 +65,16 @@ export class UserController {
     }
   }
 
-  @Patch(':email')
+  @Patch(':uid')
   update(
-    @Param('email') email: string,
+    @Param('uid') uid: string,
     @Headers('Authorization') authHeader: string,
     @Body() updateUserDto: UpdateUserDto,
   ) {
     try {
       const idToken = authHeader?.split('Bearer ')[1];
       if (idToken)
-        return this.userService.update(idToken, email, updateUserDto);
+        return this.userService.updateProfile(idToken, uid, updateUserDto);
       else throw new HttpException('No token id provided', 400);
     } catch (error) {
       console.log(error);
@@ -59,8 +82,8 @@ export class UserController {
     }
   }
 
-  @Delete(':uuid')
-  remove(@Param('uuid') uuid: string) {
-    return this.userService.remove(uuid);
+  @Delete(':uid')
+  remove(@Param('uid') uid: string) {
+    return this.userService.unsuscribe(uid);
   }
 }

@@ -1,8 +1,14 @@
 import { RegisterUserRequestDto } from '../dto/register-user.dto';
-import { UserClean } from '../entities/user.entity';
 
 export interface UserAuthRepository {
-  register(registerUser: RegisterUserRequestDto): Promise<UserClean>;
-  login(email: string, password: string): Promise<UserClean | null>;
-  verifyToken(token: string): Promise<boolean>;
+  register(registerUser: RegisterUserRequestDto): Promise<any>;
+  login(email: string, password: string): Promise<any>;
+  verifyToken(token: string): Promise<any>;
+  resetEmailAndPassword(
+    uid: string,
+    newEmail: string,
+    newPassword?: string,
+  ): Promise<any>;
+  createCustomToken(uid: string): Promise<any>;
+  getUser(uid: string): Promise<any>;
 }

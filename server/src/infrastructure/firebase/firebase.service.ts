@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as admin from 'firebase-admin';
 import { CollectionReference } from 'firebase-admin/firestore';
-
+const serviceAccount = require('./../../../../../gymbro-27bb2-firebase-adminsdk-286ab-120259787c.json');
 @Injectable()
 export class FirebaseService {
   // private readonly serviceAccount: any;
@@ -13,9 +13,9 @@ export class FirebaseService {
   constructor() {
     // this.serviceAccount = require('./../../../firebase_sdk.json');
     this.firebaseApp = admin.initializeApp({
-      // credential: admin.credential.cert(this.serviceAccount),
+      credential: admin.credential.cert(serviceAccount),
       // databaseURL: 'https://gymbro-27bb2-default-rtdb.firebaseio.com',
-      credential: admin.credential.applicationDefault(),
+      //credential: admin.credential.applicationDefault(),
       databaseURL: 'localhost:8080',
     });
     this.auth = this.firebaseApp.auth();
