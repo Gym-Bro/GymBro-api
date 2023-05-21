@@ -11,4 +11,5 @@ export interface UserAuthRepository {
   ): Promise<any>;
   createCustomToken(uid: string): Promise<any>;
   getUser(uid: string): Promise<any>;
+  getEmailVerificationLink(email: string): Promise<any>;
 }

@@ -24,9 +24,9 @@ export class UserService {
     const userAuth = await this.userAuthentication.getUser(decodedToken.uid);
     if (decodedToken.uid) {
       const user = new User(registerUser);
-      user.uid = userAuth.uid;
-      user.password = userAuth.passwordHash;
-      user.created_date = userAuth.metadata.creationTime;
+      for (let key in userAuth) {
+        user[key] = userAuth[key];
+      }
       await this.userRepository.create(user);
       await this.mailingService.sendMail({
         from: 'admin@gymbro.com',
@@ -60,10 +60,13 @@ export class UserService {
     const result = await this.userAuthentication.verifyToken(idToken);
     if (result.uid) {
       const user = await this.userRepository.findById(result.uid);
-      console.log(user);
-      const updateUser = setUpdatedDate(user);
-      console.log(user);
-      return getPublicData(await this.userRepository.update(email, updateUser));
+      for (let key in updateUserDto) {
+        user[key] = updateUserDto[key];
+      }
+      const updatedUser = setUpdatedDate(user);
+      return getPublicData(
+        await this.userRepository.update(updatedUser.uid, updatedUser),
+      );
     }
     return null;
   }
@@ -84,11 +87,22 @@ export class UserService {
         resetEmailDto.new_email,
         resetEmailDto.new_password,
       );
+      const link = await this.userAuthentication.getEmailVerificationLink(
+        userAuth.email,
+      );
+      await this.mailingService.sendMail({
+        from: 'admin@gymbro.com',
+        to: userAuth.email,
+        subject: 'Verify the new email',
+        text: link,
+      });
       const user = await this.userRepository.findById(result.uid);
       user.email = resetEmailDto.new_email;
-      user.password = userAuth.passwordHash;
-      const updatedUser = await this.userRepository.update(result.uid, user);
-      return getPublicData(updatedUser);
+      user.password = userAuth.password;
+      const updatedUser = setUpdatedDate(user);
+      return getPublicData(
+        await this.userRepository.update(updatedUser.uid, updatedUser),
+      );
     }
   }
 }

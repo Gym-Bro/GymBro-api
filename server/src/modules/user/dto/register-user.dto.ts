@@ -43,6 +43,10 @@ export class RegisterUserRequestDto {
   @IsOptional()
   photoURL: string;
 
+  @IsUrl()
+  @IsOptional()
+  phone_number: string;
+
   @IsString()
   @IsNotEmpty()
   providerId: string;
