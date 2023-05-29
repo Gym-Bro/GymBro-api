@@ -96,6 +96,18 @@ export class AuthService {
           emailResetUser.new_email,
         );
       const resetUser = await this.userService.resetEmail(emailResetUser);
+
+      await this.mailingService.sendEmail({
+        from: 'admin@gymbro.com', // Update with valid sender email address
+        to: emailResetUser.new_email, // Update with valid recipient email address
+        subject: 'New email user', // Update with meaningful subject for the email
+        text: `Dear ${resetUser.first_name} ${resetUser.last_name}, 
+        your new email has been changed succesfully. 
+        Please verify your account with the following 
+        link: ${verificationLink}`, // Update with meaningful text body for the email
+        html: template, // Update with meaningful HTML body for the email
+      });
+
       return { resetUser, verificationLink };
     } catch (error) {
       return error;

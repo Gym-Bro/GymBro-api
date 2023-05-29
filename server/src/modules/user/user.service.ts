@@ -51,10 +51,10 @@ export class UserService {
 
   async resetEmail(
     emailResetUser: EmailResetDto,
-  ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
-    | HttpException
-  > {
+  ): Promise<Pick<
+    User,
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
+  >> {
     try {
       return await this.userRepository.resetEmail(
         emailResetUser.email,

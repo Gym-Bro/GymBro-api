@@ -92,10 +92,10 @@ export class UserFirebaseRepository implements UserRepository {
   async resetEmail(
     email: string,
     emailResetUser: EmailResetDto,
-  ): Promise<
-    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
-    | HttpException
-  > {
+  ): Promise<Pick<
+    User,
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
+  >> {
     try {
       const oldEmailUser = await Object.assign(
         {},

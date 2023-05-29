@@ -1,63 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>Welcome to GymBro!!</title>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-      body {
-        background-color: #000;
-        color: #fff;
-        font-family: Arial, sans-serif;
-        margin: 0;
+      * {
+        box-sizing: border-box;
         padding: 0;
+        margin: 0;
       }
-
-      .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 40px;
-        text-align: center;
-        background-image: url('https://example.com/gym_background.jpg'); /* Replace with your own gym background image URL */
-        background-size: cover;
-        background-position: center;
+      body {
+        max-width: 100vw;
+        overflow-x: hidden;
+        background-color: #1e1e1e;
+        font-family: 'Noto Sans', sans-serif;
       }
-
-      h1 {
-        font-size: 36px;
-        margin-bottom: 20px;
-      }
-
-      p {
-        font-size: 18px;
-        margin-bottom: 30px;
-      }
-
-      a {
-        display: inline-block;
-        padding: 12px 24px;
-        background-color: #ffcc00;
-        color: #000;
-        text-decoration: none;
-        font-size: 18px;
+      .h1 {
         font-weight: bold;
-        border-radius: 5px;
-        transition: background-color 0.3s ease-in-out;
       }
-
-      a:hover {
-        background-color: #ffc600;
+      .container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: #dbdbdb;
+        text-align: center;
+        width: 80vh;
+        margin: 0 auto;
+        gap: 2rem;
+      }
+      .btn {
+        background-color: #ec8c4c;
+        color: #1e1e1e;
+        padding: 0.5rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: bold;
+        border: none;
+        font-size: 1.5rem;
+        font-weight: bold;
+      }
+      .btn:hover {
+        cursor: pointer;
+        box-shadow: 0.75rem 0.75rem 1.75rem var(--background-color-opasity);
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>Welcome to GymBro!!</h1>
-      <p>
-        You are now part of our GymBro community. Get back to our website and
-        log in so you can complete your profile data.
-      </p>
-      <a href="https://example.com/login">Login to GymBro</a>
-      <!-- Replace with your own website login URL -->
+      <img src="../../public/favicon.ico" alt="gym-bro" />
+      <h1>! Bienvenido,... !</h1>
+      <h2>
+        Muchisimas gracias por confiar en nosotros, estás apunto de empezar un
+        camino lleno de desafíos, pero también de poder empezar a superarte a
+        vos mismo, además, tenemos una comunidad sana en la cual no te sentiras
+        solo, te deceamos lo mejor en este viaje, y puedas lograr tus metas de
+        gimnasio!
+      </h2>
+      <h1>Entonces... Estás listo para empezar?</h1>
+      <a href="http://localhost:3000/clasesgratuitas" target="_blank">
+        <button class="btn">Ir a mis Clases</button>
+      </a>
     </div>
   </body>
 </html>
