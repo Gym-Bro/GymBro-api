@@ -13,7 +13,7 @@ export class UserFirebaseRepository implements UserRepository {
     this.userCollection = this.firebaseService.firestore.collection('users');
   }
 
-  async findById(uid: string): Promise<User> {
+  async read(uid: string): Promise<User> {
     try {
       const userDoc = await this.userCollection.doc(uid).get();
       if (userDoc.exists) {
@@ -66,9 +66,9 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async delete(uid: string): Promise<FirebaseFirestore.WriteResult | null> {
+  async delete(uid: string): Promise<boolean> {
     const result = await this.userCollection.doc(uid).delete();
-    if (result.writeTime) return result;
-    return null;
+    if (result.writeTime) return true;
+    return false;
   }
 }

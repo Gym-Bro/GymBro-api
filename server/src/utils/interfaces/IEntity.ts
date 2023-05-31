@@ -13,16 +13,4 @@ export abstract class IEntity {
     this.created_date = new Date().toISOString();
     this.updated_date = new Date().toISOString();
   }
-
-  // public getCreatedDate() {
-  //   return this.created_date.toDate();
-  // }
-
-  // public getUpdatedDate() {
-  //   return this.updated_date.toDate();
-  // }
-
-  // public setUpdatedDate(): void {
-  //   this.updated_date = new Date().toISOString();
-  // }
 }

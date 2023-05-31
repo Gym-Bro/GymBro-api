@@ -7,6 +7,7 @@ import { AuthFirebaseRepository } from 'infrastructure/firebase/repositories/aut
 import { MailerService } from '@nestjs-modules/mailer';
 import { EmailResetDto } from './dto/reset-email.dto';
 import { getPublicData, setUpdatedDate } from './helpers/getPublicData.helper';
+import { toRepoEntities } from 'utils/toRepoEntities';
 
 @Injectable()
 export class UserService {
@@ -19,20 +20,12 @@ export class UserService {
   async signUp(
     registerUser: RegisterUserRequestDto,
     tokenId: string,
-  ): Promise<object | null> {
+  ): Promise<User | null> {
     const decodedToken = await this.userAuthentication.verifyToken(tokenId);
     const userAuth = await this.userAuthentication.getUser(decodedToken.uid);
     if (decodedToken.uid) {
-      const user = new User(registerUser);
-      for (let key in userAuth) {
-        user[key] = userAuth[key];
-      }
+      const user = toRepoEntities(User, [userAuth, registerUser]);
       await this.userRepository.create(user);
-      await this.mailingService.sendMail({
-        from: 'admin@gymbro.com',
-        to: userAuth.email,
-        subject: 'Welcome to gymbro',
-      });
       return getPublicData(user);
     }
     return null;
@@ -45,7 +38,7 @@ export class UserService {
   async getProfile(uid: string, idToken: string): Promise<object | null> {
     const result = await this.userAuthentication.verifyToken(idToken);
     if (result.uid) {
-      const user = await this.userRepository.findById(uid);
+      const user = await this.userRepository.read(uid);
       return getPublicData(user);
     }
 
@@ -59,14 +52,12 @@ export class UserService {
   ): Promise<object | null> {
     const result = await this.userAuthentication.verifyToken(idToken);
     if (result.uid) {
-      const user = await this.userRepository.findById(result.uid);
-      for (let key in updateUserDto) {
-        user[key] = updateUserDto[key];
-      }
+      const user = toRepoEntities(User, [
+        await this.userAuthentication.getUser(result.uid),
+        updateUserDto,
+      ]);
       const updatedUser = setUpdatedDate(user);
-      return getPublicData(
-        await this.userRepository.update(updatedUser.uid, updatedUser),
-      );
+      return getPublicData(updatedUser);
     }
     return null;
   }
@@ -96,9 +87,10 @@ export class UserService {
         subject: 'Verify the new email',
         text: link,
       });
-      const user = await this.userRepository.findById(result.uid);
-      user.email = resetEmailDto.new_email;
-      user.password = userAuth.password;
+
+      const user = toRepoEntities(User, [
+        await this.userRepository.read(result.uid),
+      ]);
       const updatedUser = setUpdatedDate(user);
       return getPublicData(
         await this.userRepository.update(updatedUser.uid, updatedUser),

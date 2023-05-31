@@ -9,7 +9,7 @@ export function getPublicData(user: User) {
     photoURL: user.photoURL,
     birth_date: user.birth_date,
     phone_number: user.phone_number,
-  };
+  } as User;
 }
 
 export function setUpdatedDate(user: User) {

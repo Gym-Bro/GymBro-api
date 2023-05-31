@@ -14,30 +14,13 @@ export class User extends IEntity {
   birth_date: Date;
   phone_number: string;
 
-  constructor(registerUser: Omit<RegisterUserRequestDto, 'confirm'>) {
+  constructor() {
     super();
-    this.email = registerUser.email;
-    this.first_name = registerUser.first_name;
-    this.last_name = registerUser.last_name;
-    this.photoURL = registerUser.photoURL || null;
-    this.providerId = registerUser.providerId;
-    this.phone_number = registerUser.phone_number || null;
+    this.email = null;
+    this.first_name = null;
+    this.last_name = null;
+    this.photoURL = null;
+    this.providerId = null;
+    this.phone_number = null;
   }
-
-  // encryptPassword(password, algoritm, digest) {
-  //   const hash = createHash(algoritm).update(password).digest(digest);
-  //   return hash;
-  // }
-
-  // getPublicData() {
-  //   return {
-  //     uid: this.uid,
-  //     first_name: this.first_name,
-  //     last_name: this.last_name,
-  //     email: this.email,
-  //     photoURL: this.photoURL,
-  //     birth_date: this.birth_date,
-  //     phone_number: this.phone_number,
-  //   };
-  // }
 }
