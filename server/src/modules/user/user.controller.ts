@@ -59,8 +59,17 @@ export class UserController {
     }
   }
 
-  @Delete(':uuid')
-  remove(@Param('uuid') uuid: string) {
-    return this.userService.remove(uuid);
+  @Delete(':email')
+  remove(
+    @Param('email') email: string,
+    @Headers('Authorization') authHeader: string,
+  ) {
+    try {
+      const idToken = authHeader?.split('Bearer ')[1];
+      return this.userService.unsubscribe(email, idToken);
+    } catch (error) {
+      console.log(error.message);
+      return error;
+    }
   }
 }

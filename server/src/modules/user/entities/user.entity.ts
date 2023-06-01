@@ -67,7 +67,7 @@ export interface UserRepository {
     | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   >;
-  delete(uuid: string): Promise<User | null>;
+  delete(uuid: string): Promise<boolean>;
   checkPassword(
     email: string,
     password: string,

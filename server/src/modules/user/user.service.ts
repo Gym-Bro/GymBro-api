@@ -5,12 +5,14 @@ import { User } from './entities/user.entity';
 import { UserFirebaseRepository } from 'infrastructure/firebase/repositories/userFirebaseRepository';
 import { FirebaseService } from 'infrastructure/firebase/firebase.service';
 import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
+import { MailingService } from 'infrastructure/mailing/mailing.service';
 
 @Injectable()
 export class UserService {
   constructor(
     private readonly userRepository: UserFirebaseRepository,
     private readonly firebaseService: FirebaseService,
+    private readonly mailingService: MailingService,
   ) {}
   async create(
     registerUser: RegisterUserRequestDto,
@@ -51,10 +53,9 @@ export class UserService {
 
   async resetEmail(
     emailResetUser: EmailResetDto,
-  ): Promise<Pick<
-    User,
-    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
-  >> {
+  ): Promise<
+    Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+  > {
     try {
       return await this.userRepository.resetEmail(
         emailResetUser.email,
@@ -66,8 +67,23 @@ export class UserService {
     }
   }
 
-  remove(email: string) {
-    return `This action removes a #${email} user`;
+  async unsubscribe(email: string, idToken: string) {
+    try {
+      const result = await this.firebaseService.auth.verifyIdToken(idToken);
+      if (result.uid) {
+        await this.firebaseService.auth.deleteUser(result.uid);
+        await this.mailingService.sendEmail({
+          from: 'admin@gymbro.com',
+          to: result.email,
+          subject: 'Unsubscribe from gymbro',
+          text: `You've been unsubscribe succsesfully`,
+        });
+        return await this.userRepository.delete(email);
+      }
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   }
 
   checkPassword(email: string, password: string) {

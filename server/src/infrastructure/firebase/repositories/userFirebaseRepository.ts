@@ -92,10 +92,9 @@ export class UserFirebaseRepository implements UserRepository {
   async resetEmail(
     email: string,
     emailResetUser: EmailResetDto,
-  ): Promise<Pick<
-    User,
-    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
-  >> {
+  ): Promise<
+    Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+  > {
     try {
       const oldEmailUser = await Object.assign(
         {},
@@ -135,10 +134,9 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async delete(uuid: string): Promise<User | null> {
-    // await this.userCollection.doc(id).delete();
-    console.log('delete in user repo!');
-    return null;
+  async delete(uuid: string): Promise<boolean> {
+    const result = await this.userCollection.doc(uuid).delete();
+    return result.writeTime ? true : false;
   }
 
   async checkPassword(
