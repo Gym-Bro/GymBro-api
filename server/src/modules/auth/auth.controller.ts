@@ -16,13 +16,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  public login(
-    @Body() body: Pick<RegisterUserRequestDto, 'email'>,
-    @Headers('Authorization') authHeader: string,
-  ) {
-    const idToken = authHeader.split('Bearer ')[1];
-    return this.authService.login(body.email, idToken);
-    // return 'Hola desde login';
+  public login() {
+    //return this.authService.login(body);
+    return 'Hola desde login';
   }
 
   @Post('register')
