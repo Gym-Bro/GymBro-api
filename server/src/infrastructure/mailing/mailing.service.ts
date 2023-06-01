@@ -9,7 +9,8 @@ export class MailingService {
   async sendEmail(mailOptions: MailOptions): Promise<SentMessageInfo> {
     try {
       // Send email using the MailerService and provided mailOptions
-      return await this.mailerService.sendMail(mailOptions);
+      //return await this.mailerService.sendMail(mailOptions);
+      return {};
     } catch (err) {
       console.error('Failed to send email', err);
     }

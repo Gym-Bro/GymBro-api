@@ -1,9 +1,10 @@
 import { IEntity } from 'utils/interfaces/IEntity';
-import { RegisterUserRequestDto } from '../dto/register-user.dto';
+import { RegisterUserRequestDto } from '../../auth/dto/register-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { createHash } from 'crypto';
 import { UUIDVersion } from 'class-validator';
 import { HttpException } from '@nestjs/common';
+import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
 export class User extends IEntity {
   first_name: string = null;
   last_name: string = null;
@@ -13,7 +14,7 @@ export class User extends IEntity {
   providerId: string = null;
   birth_date: Date = null;
 
-  constructor(registerUser: RegisterUserRequestDto) {
+  constructor(registerUser: Omit<RegisterUserRequestDto, 'confirm'>) {
     super();
     this.email = registerUser.email;
     this.first_name = registerUser.first_name;
@@ -54,10 +55,21 @@ export interface UserRepository {
   > | null>;
   update(
     uuid: string,
-    updateProductDto: UpdateUserDto,
+    updateUserDto: UpdateUserDto,
+  ): Promise<
+    | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
+    | HttpException
+  >;
+  resetEmail(
+    email: string,
+    emailResetUser: EmailResetDto,
   ): Promise<
     | Pick<User, 'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'>
     | HttpException
   >;
   delete(uuid: string): Promise<User | null>;
+  checkPassword(
+    email: string,
+    password: string,
+  ): Promise<boolean | HttpException>;
 }

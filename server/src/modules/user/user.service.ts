@@ -1,9 +1,10 @@
 import { HttpException, Injectable } from '@nestjs/common';
-import { RegisterUserRequestDto } from './dto/register-user.dto';
+import { RegisterUserRequestDto } from '../auth/dto/register-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserFirebaseRepository } from 'infrastructure/firebase/repositories/userFirebaseRepository';
 import { FirebaseService } from 'infrastructure/firebase/firebase.service';
+import { EmailResetDto } from 'modules/auth/dto/email-reset.dto';
 
 @Injectable()
 export class UserService {
@@ -48,7 +49,28 @@ export class UserService {
     }
   }
 
+  async resetEmail(
+    emailResetUser: EmailResetDto,
+  ): Promise<Pick<
+    User,
+    'uuid' | 'first_name' | 'last_name' | 'email' | 'photoURL'
+  >> {
+    try {
+      return await this.userRepository.resetEmail(
+        emailResetUser.email,
+        emailResetUser,
+      );
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  }
+
   remove(email: string) {
     return `This action removes a #${email} user`;
+  }
+
+  checkPassword(email: string, password: string) {
+    return this.userRepository.checkPassword(email, password);
   }
 }
