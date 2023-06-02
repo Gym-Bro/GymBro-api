@@ -35,7 +35,7 @@ export class UserService {
     return `This action returns all user`;
   }
 
-  async getProfile(uid: string, idToken: string): Promise<object | null> {
+  async getProfile(uid: string, idToken: string): Promise<User | null> {
     const result = await this.userAuthentication.verifyToken(idToken);
     if (result.uid) {
       const user = await this.userRepository.read(uid);
@@ -49,7 +49,7 @@ export class UserService {
     idToken: string,
     email: string,
     updateUserDto: UpdateUserDto,
-  ): Promise<object | null> {
+  ): Promise<User | null> {
     const result = await this.userAuthentication.verifyToken(idToken);
     if (result.uid) {
       const user = toRepoEntities(User, [
@@ -69,10 +69,15 @@ export class UserService {
   async resetEmailUser(
     resetEmailDto: EmailResetDto,
     idToken: string,
-  ): Promise<object | null> {
+  ): Promise<User | null> {
     const result = await this.userAuthentication.verifyToken(idToken);
-    if (result.uid) {
-      //check password...
+    if (
+      result.email === resetEmailDto.email &&
+      (await this.userAuthentication.verifyPassword(
+        result.uid,
+        resetEmailDto.password,
+      ))
+    ) {
       const userAuth = await this.userAuthentication.resetEmailAndPassword(
         result.uid,
         resetEmailDto.new_email,
@@ -81,6 +86,7 @@ export class UserService {
       const link = await this.userAuthentication.getEmailVerificationLink(
         userAuth.email,
       );
+
       await this.mailingService.sendMail({
         from: 'admin@gymbro.com',
         to: userAuth.email,
@@ -88,13 +94,20 @@ export class UserService {
         text: link,
       });
 
-      const user = toRepoEntities(User, [
+      const updatedUser = toRepoEntities(User, [
         await this.userRepository.read(result.uid),
+        userAuth,
       ]);
-      const updatedUser = setUpdatedDate(user);
-      return getPublicData(
-        await this.userRepository.update(updatedUser.uid, updatedUser),
+
+      await this.userRepository.update(
+        updatedUser.uid,
+        setUpdatedDate(updatedUser),
       );
+      const publicUser = getPublicData(updatedUser);
+
+      publicUser['verification_link'] = link;
+
+      return publicUser;
     }
   }
 }

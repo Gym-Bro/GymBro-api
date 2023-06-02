@@ -50,20 +50,13 @@ export class UserFirebaseRepository implements UserRepository {
     }
   }
 
-  async update(uid: string, user: User): Promise<User> {
-    try {
-      const result = await this.userCollection
-        .doc(user.uid)
-        .update({ ...user });
-      const userResult = await this.userCollection.doc(uid).get();
-      if (userResult.exists) {
-        const userUpdated = Object.assign({}, userResult.data() as User);
-        return userUpdated;
-      } else throw new HttpException('User not found', 404);
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
+  async update(uid: string, user: User): Promise<User | null> {
+    await this.userCollection.doc(uid).update({ ...user });
+    const userResult = await this.userCollection.doc(uid).get();
+    if (userResult.exists) {
+      const userUpdated = Object.assign({}, userResult.data() as User);
+      return userUpdated;
+    } else throw new HttpException('User not found', 404);
   }
 
   async delete(uid: string): Promise<boolean> {

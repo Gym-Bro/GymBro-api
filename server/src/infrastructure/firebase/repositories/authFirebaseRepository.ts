@@ -64,6 +64,10 @@ export class AuthFirebaseRepository implements UserAuthRepository {
   async verifyToken(token: string): Promise<any> {
     return await this.userAuth.verifyIdToken(token);
   }
+
+  async verifyPassword(uid: string, password: string): Promise<any> {
+    return (await this.userAuth.getUser(uid)).passwordHash.includes(password);
+  }
 }
 
 function firebaseAuthToUserAuth(

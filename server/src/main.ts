@@ -8,6 +8,7 @@ import * as cors from 'cors';
 import * as morgan from 'morgan'; // Import morgan middleware
 
 import { config } from 'dotenv';
+import { globalErrorMiddleware } from 'utils/middlewares/globalErrorMiddleware';
 config();
 
 const server = express();
@@ -25,6 +26,7 @@ const createNestServer = async (expressInstance) => {
       forbidNonWhitelisted: true,
     }),
   );
+  app.use(globalErrorMiddleware);
 
   return app.init();
 };

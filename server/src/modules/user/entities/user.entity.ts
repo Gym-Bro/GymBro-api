@@ -22,5 +22,6 @@ export class User extends IEntity {
     this.photoURL = null;
     this.providerId = null;
     this.phone_number = null;
+    this.password = null;
   }
 }
